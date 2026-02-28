@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" fill="none">
+  <defs>
+    <radialGradient id="bg3" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#050520"/>
+      <stop offset="100%" stop-color="#030308"/>
+    </radialGradient>
+    <filter id="glow3">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00f5ff" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#00f5ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="400" fill="url(#bg3)"/>
+  <!-- Central council hub -->
+  <circle cx="400" cy="200" r="60" fill="url(#coreGlow)"/>
+  <circle cx="400" cy="200" r="30" stroke="#00f5ff" stroke-width="2" fill="none" filter="url(#glow3)"/>
+  <circle cx="400" cy="200" r="10" fill="#00f5ff" filter="url(#glow3)"/>
+  <text x="400" y="205" font-family="monospace" font-size="7" fill="#00f5ff" text-anchor="middle">COUNCIL</text>
+  <!-- Four AI nodes -->
+  <!-- PROMETHEUS -->
+  <g filter="url(#glow3)">
+    <circle cx="150" cy="100" r="35" stroke="#ff6a00" stroke-width="1.5" fill="none"/>
+    <circle cx="150" cy="100" r="8" fill="#ff6a00"/>
+    <text x="150" y="155" font-family="monospace" font-size="8" fill="#ff6a00" text-anchor="middle">PROMETHEUS</text>
+  </g>
+  <!-- ORACLE -->
+  <g filter="url(#glow3)">
+    <circle cx="650" cy="100" r="35" stroke="#ffd700" stroke-width="1.5" fill="none"/>
+    <circle cx="650" cy="100" r="8" fill="#ffd700"/>
+    <text x="650" y="155" font-family="monospace" font-size="8" fill="#ffd700" text-anchor="middle">ORACLE</text>
+  </g>
+  <!-- EMPATHY -->
+  <g filter="url(#glow3)">
+    <circle cx="150" cy="300" r="35" stroke="#00ff88" stroke-width="1.5" fill="none"/>
+    <circle cx="150" cy="300" r="8" fill="#00ff88"/>
+    <text x="150" y="355" font-family="monospace" font-size="8" fill="#00ff88" text-anchor="middle">EMPATHY</text>
+  </g>
+  <!-- GENESIS -->
+  <g filter="url(#glow3)">
+    <circle cx="650" cy="300" r="35" stroke="#ff00ff" stroke-width="1.5" fill="none"/>
+    <circle cx="650" cy="300" r="8" fill="#ff00ff"/>
+    <text x="650" y="355" font-family="monospace" font-size="8" fill="#ff00ff" text-anchor="middle">GENESIS</text>
+  </g>
+  <!-- Connection lines to council -->
+  <g stroke-width="1" filter="url(#glow3)">
+    <line x1="185" y1="115" x2="370" y2="190" stroke="#ff6a00" stroke-opacity="0.4"/>
+    <line x1="615" y1="115" x2="430" y2="190" stroke="#ffd700" stroke-opacity="0.4"/>
+    <line x1="185" y1="285" x2="370" y2="210" stroke="#00ff88" stroke-opacity="0.4"/>
+    <line x1="615" y1="285" x2="430" y2="210" stroke="#ff00ff" stroke-opacity="0.4"/>
+  </g>
+  <!-- Cross connections (inter-AI) -->
+  <g stroke-width="0.5" stroke-dasharray="4 4">
+    <line x1="185" y1="100" x2="615" y2="100" stroke="#00f5ff" stroke-opacity="0.15"/>
+    <line x1="185" y1="300" x2="615" y2="300" stroke="#00f5ff" stroke-opacity="0.15"/>
+    <line x1="150" y1="135" x2="150" y2="265" stroke="#00f5ff" stroke-opacity="0.15"/>
+    <line x1="650" y1="135" x2="650" y2="265" stroke="#00f5ff" stroke-opacity="0.15"/>
+  </g>
+  <!-- Data flow particles -->
+  <circle r="2" fill="#ff6a00" opacity="0.8">
+    <animateMotion dur="3s" repeatCount="indefinite" path="M150,100 L400,200 L650,100"/>
+  </circle>
+  <circle r="2" fill="#00ff88" opacity="0.8">
+    <animateMotion dur="3.5s" repeatCount="indefinite" path="M150,300 L400,200 L650,300"/>
+  </circle>
+  <circle r="2" fill="#00f5ff" opacity="0.8">
+    <animateMotion dur="4s" repeatCount="indefinite" path="M400,200 L150,100 L150,300 L400,200 L650,300 L650,100 L400,200"/>
+  </circle>
+  <!-- Outer ring -->
+  <circle cx="400" cy="200" r="180" stroke="#00f5ff" stroke-opacity="0.08" fill="none" stroke-width="0.5" stroke-dasharray="2 6"/>
+</svg>

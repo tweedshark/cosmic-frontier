@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" fill="none">
+  <defs>
+    <radialGradient id="bg2" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#1a0a2e"/>
+      <stop offset="100%" stop-color="#030308"/>
+    </radialGradient>
+    <filter id="glow2">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="portalGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ff00ff" stop-opacity="0.6"/>
+      <stop offset="50%" stop-color="#ff00ff" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#ff00ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg2)"/>
+  <!-- Dimensional grid - perspective -->
+  <g stroke="#ff00ff" stroke-opacity="0.06" stroke-width="0.5">
+    <line x1="400" y1="250" x2="0" y2="0"/><line x1="400" y1="250" x2="200" y2="0"/>
+    <line x1="400" y1="250" x2="400" y2="0"/><line x1="400" y1="250" x2="600" y2="0"/>
+    <line x1="400" y1="250" x2="800" y2="0"/><line x1="400" y1="250" x2="0" y2="500"/>
+    <line x1="400" y1="250" x2="200" y2="500"/><line x1="400" y1="250" x2="400" y2="500"/>
+    <line x1="400" y1="250" x2="600" y2="500"/><line x1="400" y1="250" x2="800" y2="500"/>
+  </g>
+  <!-- Concentric dimension rings -->
+  <g filter="url(#glow2)">
+    <ellipse cx="400" cy="250" rx="180" ry="60" stroke="#ff00ff" stroke-opacity="0.3" fill="none" stroke-width="1">
+      <animateTransform attributeName="transform" type="rotate" from="0 400 250" to="360 400 250" dur="20s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="400" cy="250" rx="140" ry="100" stroke="#00f5ff" stroke-opacity="0.25" fill="none" stroke-width="1">
+      <animateTransform attributeName="transform" type="rotate" from="360 400 250" to="0 400 250" dur="15s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="400" cy="250" rx="100" ry="140" stroke="#ff00ff" stroke-opacity="0.2" fill="none" stroke-width="1">
+      <animateTransform attributeName="transform" type="rotate" from="0 400 250" to="360 400 250" dur="25s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="400" cy="250" rx="60" ry="180" stroke="#ffd700" stroke-opacity="0.15" fill="none" stroke-width="1">
+      <animateTransform attributeName="transform" type="rotate" from="360 400 250" to="0 400 250" dur="30s" repeatCount="indefinite"/>
+    </ellipse>
+  </g>
+  <!-- Central portal -->
+  <circle cx="400" cy="250" r="80" fill="url(#portalGlow)"/>
+  <circle cx="400" cy="250" r="40" stroke="#ff00ff" stroke-width="2" fill="none" filter="url(#glow2)">
+    <animate attributeName="r" values="40;50;40" dur="3s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="400" cy="250" r="15" fill="#ff00ff" opacity="0.8" filter="url(#glow2)">
+    <animate attributeName="r" values="15;20;15" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <!-- Dimension labels -->
+  <g font-family="monospace" font-size="9" fill="#ff00ff" opacity="0.5">
+    <text x="260" y="195">D-3</text><text x="510" y="195">D-7</text>
+    <text x="260" y="320">D-5</text><text x="510" y="320">D-11</text>
+    <text x="395" y="135">D-1</text><text x="395" y="385">D-9</text>
+  </g>
+  <!-- Floating dimension markers -->
+  <g filter="url(#glow2)">
+    <circle cx="260" cy="190" r="4" fill="#ff00ff" opacity="0.6">
+      <animate attributeName="cy" values="190;185;190" dur="4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="540" cy="190" r="4" fill="#00f5ff" opacity="0.6">
+      <animate attributeName="cy" values="190;195;190" dur="3.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="260" cy="315" r="4" fill="#ffd700" opacity="0.6">
+      <animate attributeName="cy" values="315;310;315" dur="5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="540" cy="315" r="4" fill="#ff00ff" opacity="0.6">
+      <animate attributeName="cy" values="315;320;315" dur="4.5s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  <!-- Energy streams -->
+  <path d="M400,250 Q300,150 200,100" stroke="#ff00ff" stroke-opacity="0.15" fill="none" stroke-width="1"/>
+  <path d="M400,250 Q500,150 600,100" stroke="#00f5ff" stroke-opacity="0.15" fill="none" stroke-width="1"/>
+  <path d="M400,250 Q300,350 200,400" stroke="#ffd700" stroke-opacity="0.1" fill="none" stroke-width="1"/>
+  <path d="M400,250 Q500,350 600,400" stroke="#ff00ff" stroke-opacity="0.1" fill="none" stroke-width="1"/>
+  <!-- Traveling particles -->
+  <circle r="2" fill="#ff00ff" opacity="0.9">
+    <animateMotion dur="6s" repeatCount="indefinite" path="M400,250 Q300,150 200,100 Q300,150 400,250 Q500,350 600,400 Q500,350 400,250"/>
+  </circle>
+  <circle r="2" fill="#00f5ff" opacity="0.9">
+    <animateMotion dur="5s" repeatCount="indefinite" path="M400,250 Q500,150 600,100 Q500,150 400,250 Q300,350 200,400 Q300,350 400,250"/>
+  </circle>
+</svg>

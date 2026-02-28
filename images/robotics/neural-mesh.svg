@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" fill="none">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#0a0a2a"/>
+      <stop offset="100%" stop-color="#030308"/>
+    </radialGradient>
+    <radialGradient id="nodeGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00f5ff" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#00f5ff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softGlow">
+      <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <!-- Grid lines -->
+  <g stroke="#00f5ff" stroke-opacity="0.05" stroke-width="0.5">
+    <line x1="0" y1="100" x2="800" y2="100"/><line x1="0" y1="200" x2="800" y2="200"/>
+    <line x1="0" y1="300" x2="800" y2="300"/><line x1="0" y1="400" x2="800" y2="400"/>
+    <line x1="160" y1="0" x2="160" y2="500"/><line x1="320" y1="0" x2="320" y2="500"/>
+    <line x1="480" y1="0" x2="480" y2="500"/><line x1="640" y1="0" x2="640" y2="500"/>
+  </g>
+  <!-- Neural connections -->
+  <g stroke="#00f5ff" stroke-opacity="0.15" stroke-width="1" filter="url(#glow)">
+    <line x1="120" y1="150" x2="280" y2="100"/><line x1="280" y1="100" x2="400" y2="200"/>
+    <line x1="400" y1="200" x2="520" y2="120"/><line x1="520" y1="120" x2="680" y2="180"/>
+    <line x1="120" y1="150" x2="200" y2="280"/><line x1="200" y1="280" x2="400" y2="200"/>
+    <line x1="400" y1="200" x2="350" y2="350"/><line x1="350" y1="350" x2="520" y2="380"/>
+    <line x1="520" y1="380" x2="680" y2="180"/><line x1="680" y1="180" x2="700" y2="350"/>
+    <line x1="200" y1="280" x2="350" y2="350"/><line x1="280" y1="100" x2="200" y2="280"/>
+    <line x1="520" y1="120" x2="520" y2="380"/><line x1="120" y1="150" x2="100" y2="380"/>
+    <line x1="100" y1="380" x2="200" y2="280"/><line x1="100" y1="380" x2="350" y2="350"/>
+    <line x1="700" y1="350" x2="520" y2="380"/>
+  </g>
+  <!-- Secondary connections -->
+  <g stroke="#ff00ff" stroke-opacity="0.08" stroke-width="0.5">
+    <line x1="120" y1="150" x2="520" y2="120"/><line x1="280" y1="100" x2="350" y2="350"/>
+    <line x1="200" y1="280" x2="680" y2="180"/><line x1="400" y1="200" x2="700" y2="350"/>
+    <line x1="100" y1="380" x2="520" y2="380"/>
+  </g>
+  <!-- Neural nodes -->
+  <g filter="url(#softGlow)">
+    <circle cx="120" cy="150" r="20" fill="url(#nodeGlow)"/><circle cx="120" cy="150" r="6" fill="#00f5ff"/>
+    <circle cx="280" cy="100" r="16" fill="url(#nodeGlow)"/><circle cx="280" cy="100" r="5" fill="#00f5ff"/>
+    <circle cx="400" cy="200" r="24" fill="url(#nodeGlow)"/><circle cx="400" cy="200" r="8" fill="#00f5ff"/>
+    <circle cx="520" cy="120" r="18" fill="url(#nodeGlow)"/><circle cx="520" cy="120" r="5" fill="#00f5ff"/>
+    <circle cx="680" cy="180" r="20" fill="url(#nodeGlow)"/><circle cx="680" cy="180" r="6" fill="#00f5ff"/>
+    <circle cx="200" cy="280" r="16" fill="url(#nodeGlow)"/><circle cx="200" cy="280" r="5" fill="#00f5ff"/>
+    <circle cx="350" cy="350" r="14" fill="url(#nodeGlow)"/><circle cx="350" cy="350" r="4" fill="#00f5ff"/>
+    <circle cx="520" cy="380" r="18" fill="url(#nodeGlow)"/><circle cx="520" cy="380" r="6" fill="#00f5ff"/>
+    <circle cx="700" cy="350" r="14" fill="url(#nodeGlow)"/><circle cx="700" cy="350" r="4" fill="#00f5ff"/>
+    <circle cx="100" cy="380" r="12" fill="url(#nodeGlow)"/><circle cx="100" cy="380" r="3" fill="#00f5ff"/>
+  </g>
+  <!-- Pulse rings on central node -->
+  <circle cx="400" cy="200" r="35" stroke="#00f5ff" stroke-opacity="0.2" fill="none" stroke-width="1">
+    <animate attributeName="r" values="35;55;35" dur="3s" repeatCount="indefinite"/>
+    <animate attributeName="stroke-opacity" values="0.2;0;0.2" dur="3s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="400" cy="200" r="45" stroke="#00f5ff" stroke-opacity="0.1" fill="none" stroke-width="0.5">
+    <animate attributeName="r" values="45;70;45" dur="4s" repeatCount="indefinite"/>
+    <animate attributeName="stroke-opacity" values="0.1;0;0.1" dur="4s" repeatCount="indefinite"/>
+  </circle>
+  <!-- Data flow particles along connections -->
+  <circle r="2" fill="#00f5ff" opacity="0.8">
+    <animateMotion dur="4s" repeatCount="indefinite" path="M120,150 L280,100 L400,200 L520,120 L680,180"/>
+  </circle>
+  <circle r="2" fill="#ff00ff" opacity="0.6">
+    <animateMotion dur="5s" repeatCount="indefinite" path="M680,180 L520,380 L350,350 L200,280 L120,150"/>
+  </circle>
+  <circle r="1.5" fill="#00f5ff" opacity="0.7">
+    <animateMotion dur="3s" repeatCount="indefinite" path="M400,200 L350,350 L100,380 L200,280 L400,200"/>
+  </circle>
+</svg>

@@ -293,13 +293,14 @@ class SectionReveal {
                 opacity: 1;
                 transform: translateY(0);
             }
-            .info-card, .concept, .species, .ai-node, .mission-card, .timeline-item {
+            .info-card, .concept, .species, .ai-node, .mission-card, .timeline-item, .synthesis-card, .hazard-card {
                 opacity: 0;
                 transform: translateY(30px);
                 transition: opacity 0.6s ease, transform 0.6s ease;
             }
             .revealed .info-card, .revealed .concept, .revealed .species,
-            .revealed .ai-node, .revealed .mission-card, .revealed .timeline-item {
+            .revealed .ai-node, .revealed .mission-card, .revealed .timeline-item,
+            .revealed .synthesis-card, .revealed .hazard-card {
                 opacity: 1;
                 transform: translateY(0);
             }
@@ -314,7 +315,7 @@ class SectionReveal {
                     entry.target.classList.add('revealed');
 
                     // Stagger child animations
-                    const children = entry.target.querySelectorAll('.info-card, .concept, .species, .ai-node, .mission-card, .timeline-item');
+                    const children = entry.target.querySelectorAll('.info-card, .concept, .species, .ai-node, .mission-card, .timeline-item, .synthesis-card, .hazard-card');
                     children.forEach((child, index) => {
                         child.style.transitionDelay = `${index * 0.1}s`;
                     });
@@ -424,7 +425,7 @@ class GlitchEffect {
 // ─────────────────────────────────────────────────────────────────
 class CardHoverEffect {
     constructor() {
-        this.cards = document.querySelectorAll('.info-card, .ai-node, .mission-card');
+        this.cards = document.querySelectorAll('.info-card, .ai-node, .mission-card, .synthesis-card, .hazard-card');
         this.bindEvents();
     }
 
@@ -540,6 +541,121 @@ class SoundEffects {
 }
 
 // ─────────────────────────────────────────────────────────────────
+// Deep Dive Expand/Collapse
+// ─────────────────────────────────────────────────────────────────
+class DeepDiveToggle {
+    constructor() {
+        this.toggles = document.querySelectorAll('.deep-dive-toggle');
+        this.bindEvents();
+    }
+
+    bindEvents() {
+        this.toggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const deepDive = toggle.closest('.deep-dive');
+                const isExpanded = deepDive.dataset.expanded === 'true';
+                deepDive.dataset.expanded = isExpanded ? 'false' : 'true';
+            });
+        });
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Subsection Reveal Animation
+// ─────────────────────────────────────────────────────────────────
+class SubsectionReveal {
+    constructor() {
+        this.addStyles();
+        this.bindEvents();
+    }
+
+    addStyles() {
+        const style = document.createElement('style');
+        style.textContent = `
+            .subsection {
+                opacity: 0;
+                transform: translateY(40px);
+                transition: opacity 0.8s ease, transform 0.8s ease;
+            }
+            .subsection.revealed {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            .evo-item, .terminal-entry, .synthesis-card, .hazard-card, .memorial-entry {
+                opacity: 0;
+                transform: translateY(20px);
+                transition: opacity 0.5s ease, transform 0.5s ease;
+            }
+            .revealed .evo-item, .revealed .terminal-entry,
+            .revealed .synthesis-card, .revealed .hazard-card,
+            .revealed .memorial-entry {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    bindEvents() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+
+                    // Stagger child animations
+                    const children = entry.target.querySelectorAll(
+                        '.evo-item, .terminal-entry, .synthesis-card, .hazard-card, .memorial-entry'
+                    );
+                    children.forEach((child, index) => {
+                        child.style.transitionDelay = `${index * 0.1}s`;
+                    });
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.subsection').forEach(sub => observer.observe(sub));
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Terminal Typing Effect
+// ─────────────────────────────────────────────────────────────────
+class TerminalTyping {
+    constructor() {
+        this.bindEvents();
+    }
+
+    bindEvents() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !entry.target.classList.contains('typed')) {
+                    entry.target.classList.add('typed');
+                    this.animateTerminal(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
+
+        document.querySelectorAll('.data-terminal').forEach(terminal => {
+            observer.observe(terminal);
+        });
+    }
+
+    animateTerminal(terminal) {
+        const entries = terminal.querySelectorAll('.terminal-entry');
+        entries.forEach((entry, index) => {
+            entry.style.opacity = '0';
+            entry.style.transform = 'translateX(-10px)';
+            entry.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+
+            setTimeout(() => {
+                entry.style.opacity = '1';
+                entry.style.transform = 'translateX(0)';
+            }, 200 + (index * 150));
+        });
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────
 // Initialize Everything
 // ─────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
@@ -555,6 +671,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const glitchEffect = new GlitchEffect();
     const cardHover = new CardHoverEffect();
     const cursorTrail = new CursorTrail();
+
+    // New content depth features
+    const deepDiveToggle = new DeepDiveToggle();
+    const subsectionReveal = new SubsectionReveal();
+    const terminalTyping = new TerminalTyping();
 
     // Optional
     const soundEffects = new SoundEffects();

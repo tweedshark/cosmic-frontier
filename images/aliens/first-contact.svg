@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" fill="none">
+  <defs>
+    <radialGradient id="bg4" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#0a1a0a"/>
+      <stop offset="100%" stop-color="#030308"/>
+    </radialGradient>
+    <filter id="glow4">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#00ff88" stop-opacity="0.3"/>
+      <stop offset="50%" stop-color="#00ff88" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#00ff88" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="crystalGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg4)"/>
+  <!-- Stars -->
+  <g fill="#ffffff">
+    <circle cx="50" cy="30" r="1" opacity="0.6"/><circle cx="150" cy="80" r="0.8" opacity="0.4"/>
+    <circle cx="250" cy="20" r="1.2" opacity="0.7"/><circle cx="350" cy="60" r="0.6" opacity="0.3"/>
+    <circle cx="450" cy="40" r="1" opacity="0.5"/><circle cx="550" cy="70" r="0.8" opacity="0.6"/>
+    <circle cx="650" cy="25" r="1.1" opacity="0.4"/><circle cx="750" cy="55" r="0.7" opacity="0.5"/>
+    <circle cx="100" cy="120" r="0.9" opacity="0.3"/><circle cx="700" cy="110" r="1" opacity="0.4"/>
+    <circle cx="300" cy="100" r="0.5" opacity="0.6"/><circle cx="500" cy="90" r="0.7" opacity="0.3"/>
+  </g>
+  <!-- Ground plane -->
+  <path d="M0,420 Q200,400 400,410 Q600,420 800,405 L800,500 L0,500 Z" fill="#0a0a1a" opacity="0.8"/>
+  <g stroke="#00ff88" stroke-opacity="0.1" stroke-width="0.5">
+    <line x1="0" y1="420" x2="800" y2="420"/>
+    <line x1="0" y1="440" x2="800" y2="440"/>
+    <line x1="0" y1="460" x2="800" y2="460"/>
+    <line x1="0" y1="480" x2="800" y2="480"/>
+  </g>
+  <!-- Communication beam between the two groups -->
+  <path d="M300,300 L400,200 L500,300" stroke="#00ff88" stroke-opacity="0.15" fill="url(#beam)" stroke-width="1"/>
+  <!-- Human delegation (left side) -->
+  <!-- Human figure 1 -->
+  <g transform="translate(220, 320)" filter="url(#glow4)">
+    <circle cx="0" cy="0" r="8" fill="#00f5ff" opacity="0.6"/>
+    <line x1="0" y1="8" x2="0" y2="50" stroke="#00f5ff" stroke-width="2" stroke-opacity="0.5"/>
+    <line x1="-15" y1="25" x2="15" y2="25" stroke="#00f5ff" stroke-width="2" stroke-opacity="0.5"/>
+    <line x1="0" y1="50" x2="-10" y2="80" stroke="#00f5ff" stroke-width="2" stroke-opacity="0.5"/>
+    <line x1="0" y1="50" x2="10" y2="80" stroke="#00f5ff" stroke-width="2" stroke-opacity="0.5"/>
+  </g>
+  <!-- Human figure 2 -->
+  <g transform="translate(270, 330)" filter="url(#glow4)">
+    <circle cx="0" cy="0" r="7" fill="#00f5ff" opacity="0.5"/>
+    <line x1="0" y1="7" x2="0" y2="45" stroke="#00f5ff" stroke-width="2" stroke-opacity="0.4"/>
+    <line x1="-12" y1="22" x2="12" y2="22" stroke="#00f5ff" stroke-width="2" stroke-opacity="0.4"/>
+    <line x1="0" y1="45" x2="-8" y2="70" stroke="#00f5ff" stroke-width="2" stroke-opacity="0.4"/>
+    <line x1="0" y1="45" x2="8" y2="70" stroke="#00f5ff" stroke-width="2" stroke-opacity="0.4"/>
+  </g>
+  <!-- Human figure 3 (leader, reaching out) -->
+  <g transform="translate(320, 310)" filter="url(#glow4)">
+    <circle cx="0" cy="0" r="9" fill="#00f5ff" opacity="0.7"/>
+    <line x1="0" y1="9" x2="0" y2="55" stroke="#00f5ff" stroke-width="2.5" stroke-opacity="0.6"/>
+    <line x1="-15" y1="28" x2="20" y2="18" stroke="#00f5ff" stroke-width="2.5" stroke-opacity="0.6"/>
+    <line x1="0" y1="55" x2="-10" y2="85" stroke="#00f5ff" stroke-width="2.5" stroke-opacity="0.6"/>
+    <line x1="0" y1="55" x2="10" y2="85" stroke="#00f5ff" stroke-width="2.5" stroke-opacity="0.6"/>
+  </g>
+  <!-- Crystalline beings (right side) -->
+  <!-- Crystal 1 -->
+  <g transform="translate(520, 280)" filter="url(#glow4)">
+    <polygon points="0,-50 20,-10 30,40 0,50 -30,40 -20,-10" fill="#8b5cf6" fill-opacity="0.2" stroke="#8b5cf6" stroke-width="1.5"/>
+    <polygon points="0,-35 12,-8 18,30 0,38 -18,30 -12,-8" fill="#8b5cf6" fill-opacity="0.1" stroke="#8b5cf6" stroke-width="0.5" stroke-opacity="0.5"/>
+    <circle cx="0" cy="-5" r="15" fill="url(#crystalGlow)"/>
+    <circle cx="0" cy="-5" r="4" fill="#8b5cf6" opacity="0.8">
+      <animate attributeName="opacity" values="0.8;0.4;0.8" dur="2s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  <!-- Crystal 2 -->
+  <g transform="translate(570, 300)" filter="url(#glow4)">
+    <polygon points="0,-40 15,-5 22,35 0,42 -22,35 -15,-5" fill="#06b6d4" fill-opacity="0.2" stroke="#06b6d4" stroke-width="1.5"/>
+    <circle cx="0" cy="0" r="12" fill="url(#crystalGlow)"/>
+    <circle cx="0" cy="0" r="3" fill="#06b6d4" opacity="0.8">
+      <animate attributeName="opacity" values="0.8;0.3;0.8" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  <!-- Crystal 3 (larger, leader) -->
+  <g transform="translate(480, 260)" filter="url(#glow4)">
+    <polygon points="0,-60 25,-15 35,45 0,55 -35,45 -25,-15" fill="#8b5cf6" fill-opacity="0.25" stroke="#8b5cf6" stroke-width="2"/>
+    <polygon points="0,-45 15,-10 22,35 0,42 -22,35 -15,-10" fill="#8b5cf6" fill-opacity="0.1" stroke="#8b5cf6" stroke-width="0.8" stroke-opacity="0.5"/>
+    <circle cx="0" cy="-5" r="20" fill="url(#crystalGlow)"/>
+    <circle cx="0" cy="-5" r="6" fill="#8b5cf6" opacity="0.9">
+      <animate attributeName="opacity" values="0.9;0.5;0.9" dur="1.8s" repeatCount="indefinite"/>
+    </circle>
+    <!-- Reaching tendril -->
+    <path d="M-25,-15 Q-50,-20 -70,0" stroke="#8b5cf6" stroke-width="1.5" stroke-opacity="0.5" fill="none"/>
+  </g>
+  <!-- Harmonic vibration waves between them -->
+  <g stroke="#00ff88" stroke-opacity="0.2" fill="none" stroke-width="0.8">
+    <path d="M340,310 Q370,290 400,305 Q430,320 460,300">
+      <animate attributeName="d" values="M340,310 Q370,290 400,305 Q430,320 460,300;M340,305 Q370,320 400,300 Q430,290 460,310;M340,310 Q370,290 400,305 Q430,320 460,300" dur="3s" repeatCount="indefinite"/>
+    </path>
+    <path d="M340,320 Q370,300 400,315 Q430,330 460,310">
+      <animate attributeName="d" values="M340,320 Q370,300 400,315 Q430,330 460,310;M340,315 Q370,330 400,310 Q430,300 460,320;M340,320 Q370,300 400,315 Q430,330 460,310" dur="2.5s" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <!-- Label -->
+  <text x="400" y="480" font-family="monospace" font-size="10" fill="#00ff88" text-anchor="middle" opacity="0.4">KEPLER-442b SURFACE — YEAR 2260 — FIRST CONTACT EVENT</text>
+</svg>
