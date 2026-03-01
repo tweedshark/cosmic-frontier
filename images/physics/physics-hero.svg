@@ -1,0 +1,166 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" fill="none">
+  <defs>
+    <radialGradient id="pbg" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#0a0a2a"/>
+      <stop offset="100%" stop-color="#030308"/>
+    </radialGradient>
+    <radialGradient id="wormhole" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+      <stop offset="15%" stop-color="#00f5ff" stop-opacity="0.6"/>
+      <stop offset="35%" stop-color="#7700ff" stop-opacity="0.3"/>
+      <stop offset="60%" stop-color="#1a0a3e" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+    <filter id="pGlow">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="pGlow2">
+      <feGaussianBlur stdDeviation="8" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="pGlow3">
+      <feGaussianBlur stdDeviation="20" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="accDisk" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ff6a00" stop-opacity="0.8"/>
+      <stop offset="40%" stop-color="#ff00ff" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#7700ff" stop-opacity="0.1"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="500" fill="url(#pbg)"/>
+
+  <!-- Background stars -->
+  <g fill="#ffffff" opacity="0.3">
+    <circle cx="30" cy="40" r="0.4"/><circle cx="100" cy="120" r="0.5"/><circle cx="180" cy="25" r="0.3"/>
+    <circle cx="250" cy="90" r="0.6"/><circle cx="330" cy="35" r="0.4"/><circle cx="480" cy="70" r="0.5"/>
+    <circle cx="560" cy="30" r="0.3"/><circle cx="640" cy="100" r="0.6"/><circle cx="720" cy="50" r="0.4"/>
+    <circle cx="770" cy="120" r="0.5"/><circle cx="50" cy="380" r="0.4"/><circle cx="140" cy="440" r="0.3"/>
+    <circle cx="660" cy="400" r="0.5"/><circle cx="750" cy="450" r="0.4"/><circle cx="350" cy="460" r="0.3"/>
+    <circle cx="520" cy="440" r="0.5"/>
+  </g>
+
+  <!-- Einstein-Rosen Bridge (Wormhole) -->
+  <g transform="translate(400, 250)">
+    <!-- Spacetime distortion grid -->
+    <g stroke="#00f5ff" stroke-opacity="0.05" stroke-width="0.5" fill="none">
+      <!-- Warped horizontal lines -->
+      <path d="M-350,-150 Q-100,-150 -50,-130 Q0,-80 0,0 Q0,80 50,130 Q100,150 350,150"/>
+      <path d="M-350,-100 Q-100,-100 -40,-80 Q0,-40 0,0 Q0,40 40,80 Q100,100 350,100"/>
+      <path d="M-350,-50 Q-100,-50 -30,-30 Q0,-10 0,0 Q0,10 30,30 Q100,50 350,50"/>
+      <path d="M-350,0 Q-100,0 -20,0 Q0,0 20,0 Q100,0 350,0"/>
+      <path d="M-350,50 Q-100,50 -30,30 Q0,10 0,0 Q0,-10 30,-30 Q100,-50 350,-50"/>
+      <path d="M-350,100 Q-100,100 -40,80 Q0,40 0,0 Q0,-40 40,-80 Q100,-100 350,-100"/>
+      <path d="M-350,150 Q-100,150 -50,130 Q0,80 0,0 Q0,-80 50,-130 Q100,-150 350,-150"/>
+    </g>
+
+    <!-- Accretion disk - outer -->
+    <ellipse cx="0" cy="0" rx="180" ry="40" fill="none" stroke="#ff6a00" stroke-width="2" stroke-opacity="0.15">
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="20s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="0" cy="0" rx="160" ry="35" fill="none" stroke="#ff00ff" stroke-width="1.5" stroke-opacity="0.2">
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="15s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="0" cy="0" rx="140" ry="30" fill="none" stroke="#ff00ff" stroke-width="2" stroke-opacity="0.25">
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="12s" repeatCount="indefinite"/>
+    </ellipse>
+
+    <!-- Inner accretion rings -->
+    <ellipse cx="0" cy="0" rx="100" ry="22" fill="none" stroke="#7700ff" stroke-width="3" stroke-opacity="0.3" filter="url(#pGlow)">
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="8s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="0" cy="0" rx="80" ry="18" fill="none" stroke="#9900ff" stroke-width="2" stroke-opacity="0.4" filter="url(#pGlow)">
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="6s" repeatCount="indefinite"/>
+    </ellipse>
+
+    <!-- Wormhole throat -->
+    <circle cx="0" cy="0" r="50" fill="url(#wormhole)" filter="url(#pGlow2)">
+      <animate attributeName="r" values="50;53;50" dur="4s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Event horizon -->
+    <circle cx="0" cy="0" r="35" fill="#000000" stroke="#7700ff" stroke-width="1.5" stroke-opacity="0.6" filter="url(#pGlow)">
+      <animate attributeName="r" values="35;37;35" dur="3s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Inner light -->
+    <circle cx="0" cy="0" r="15" fill="#ffffff" opacity="0.3" filter="url(#pGlow2)">
+      <animate attributeName="opacity" values="0.3;0.5;0.3" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="0" cy="0" r="5" fill="#ffffff" opacity="0.8"/>
+
+    <!-- Gravitational lensing arcs -->
+    <g stroke="#ffffff" stroke-opacity="0.08" fill="none" stroke-width="1">
+      <path d="M-200,-80 Q-100,-120 0,-90 Q100,-60 200,-100"/>
+      <path d="M-200,80 Q-100,120 0,90 Q100,60 200,100"/>
+      <path d="M-180,-120 Q-80,-140 0,-110 Q80,-80 180,-120" stroke-opacity="0.05"/>
+      <path d="M-180,120 Q-80,140 0,110 Q80,80 180,120" stroke-opacity="0.05"/>
+    </g>
+
+    <!-- Particles being pulled in -->
+    <g filter="url(#pGlow)">
+      <circle cx="-120" cy="-40" r="1.5" fill="#ff6a00" opacity="0.7">
+        <animate attributeName="cx" values="-120;-50;-30" dur="3s" repeatCount="indefinite"/>
+        <animate attributeName="cy" values="-40;-20;0" dur="3s" repeatCount="indefinite"/>
+        <animate attributeName="r" values="1.5;1;0.3" dur="3s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="130" cy="30" r="1.2" fill="#ff00ff" opacity="0.6">
+        <animate attributeName="cx" values="130;60;30" dur="4s" repeatCount="indefinite"/>
+        <animate attributeName="cy" values="30;15;0" dur="4s" repeatCount="indefinite"/>
+        <animate attributeName="r" values="1.2;0.8;0.2" dur="4s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="-90" cy="50" r="1" fill="#ffd700" opacity="0.5">
+        <animate attributeName="cx" values="-90;-40;-20" dur="5s" repeatCount="indefinite"/>
+        <animate attributeName="cy" values="50;25;5" dur="5s" repeatCount="indefinite"/>
+        <animate attributeName="r" values="1;0.6;0.1" dur="5s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+
+    <!-- Ships approaching the bridge -->
+    <polygon points="-6,-2 6,0 -6,2" fill="#00f5ff" opacity="0.5">
+      <animateMotion dur="12s" repeatCount="indefinite" path="M-300,-80 Q-150,-60 -80,-30"/>
+    </polygon>
+    <polygon points="-4,-1.5 4,0 -4,1.5" fill="#00f5ff" opacity="0.4">
+      <animateMotion dur="15s" repeatCount="indefinite" path="M300,60 Q150,40 80,20"/>
+    </polygon>
+
+    <!-- Relativistic jet (top) -->
+    <g opacity="0.15">
+      <line x1="0" y1="-35" x2="-5" y2="-200" stroke="#7700ff" stroke-width="3" filter="url(#pGlow)"/>
+      <line x1="0" y1="-35" x2="5" y2="-200" stroke="#7700ff" stroke-width="3" filter="url(#pGlow)"/>
+      <line x1="0" y1="-35" x2="0" y2="-220" stroke="#ffffff" stroke-width="1"/>
+    </g>
+    <!-- Relativistic jet (bottom) -->
+    <g opacity="0.15">
+      <line x1="0" y1="35" x2="-5" y2="200" stroke="#7700ff" stroke-width="3" filter="url(#pGlow)"/>
+      <line x1="0" y1="35" x2="5" y2="200" stroke="#7700ff" stroke-width="3" filter="url(#pGlow)"/>
+      <line x1="0" y1="35" x2="0" y2="220" stroke="#ffffff" stroke-width="1"/>
+    </g>
+  </g>
+
+  <!-- Mathematical equations floating -->
+  <g font-family="monospace" font-size="8" fill="#00f5ff" opacity="0.15">
+    <text x="50" y="80">E = mc²</text>
+    <text x="620" y="60">G_μν = 8πT_μν</text>
+    <text x="80" y="430">ds² = -(1-2M/r)dt²</text>
+    <text x="580" y="450">∇²Φ = 4πGρ</text>
+    <text x="50" y="250">Ψ(x,t) = Ae^(ikx-iωt)</text>
+    <text x="620" y="300">ΔxΔp ≥ ℏ/2</text>
+  </g>
+
+  <!-- HUD corners -->
+  <g stroke="#00f5ff" stroke-opacity="0.15" fill="none" stroke-width="1">
+    <path d="M20,20 L20,50 M20,20 L50,20"/>
+    <path d="M780,20 L780,50 M780,20 L750,20"/>
+    <path d="M20,480 L20,450 M20,480 L50,480"/>
+    <path d="M780,480 L780,450 M780,480 L750,480"/>
+  </g>
+
+  <g font-family="monospace" font-size="7" fill="#00f5ff" opacity="0.2">
+    <text x="30" y="35">EINSTEIN-ROSEN BRIDGE</text>
+    <text x="30" y="47">STABILITY: 87.3%</text>
+    <text x="640" y="475">TRANSIT WINDOW: OPEN</text>
+  </g>
+</svg>

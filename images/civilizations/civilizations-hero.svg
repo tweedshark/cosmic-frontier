@@ -1,0 +1,204 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" fill="none">
+  <defs>
+    <radialGradient id="cbg" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#0a0a2a"/>
+      <stop offset="100%" stop-color="#030308"/>
+    </radialGradient>
+    <radialGradient id="dysonStar" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffd700"/>
+      <stop offset="30%" stop-color="#ff8c00" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+    <filter id="cGlow">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="cGlow2">
+      <feGaussianBlur stdDeviation="8" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="cGlow3">
+      <feGaussianBlur stdDeviation="15" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ff6a00" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#ff6a00" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#ff6a00" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="500" fill="url(#cbg)"/>
+
+  <!-- Background stars -->
+  <g fill="#ffffff" opacity="0.25">
+    <circle cx="30" cy="40" r="0.4"/><circle cx="100" cy="80" r="0.5"/><circle cx="180" cy="30" r="0.3"/>
+    <circle cx="270" cy="90" r="0.6"/><circle cx="350" cy="25" r="0.4"/><circle cx="450" cy="70" r="0.5"/>
+    <circle cx="540" cy="35" r="0.3"/><circle cx="630" cy="60" r="0.6"/><circle cx="720" cy="45" r="0.4"/>
+    <circle cx="770" cy="100" r="0.5"/><circle cx="60" cy="200" r="0.3"/><circle cx="750" cy="180" r="0.4"/>
+    <circle cx="40" cy="350" r="0.5"/><circle cx="130" cy="430" r="0.3"/><circle cx="670" cy="400" r="0.6"/>
+    <circle cx="760" cy="460" r="0.4"/>
+  </g>
+
+  <!-- Dyson Sphere Structure (center) -->
+  <g transform="translate(400, 250)">
+    <!-- Outer energy collection shell -->
+    <circle cx="0" cy="0" r="150" stroke="#ff6a00" stroke-width="0.3" fill="none" opacity="0.08" stroke-dasharray="2 8">
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="120s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Dyson sphere panels (partial sphere - showing construction) -->
+    <!-- Major ring 1 -->
+    <ellipse cx="0" cy="0" rx="130" ry="130" stroke="#ff6a00" stroke-width="1" fill="none" opacity="0.12">
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="60s" repeatCount="indefinite"/>
+    </ellipse>
+    <!-- Major ring 2 (tilted) -->
+    <ellipse cx="0" cy="0" rx="130" ry="50" stroke="#ff6a00" stroke-width="1.5" fill="none" opacity="0.2" filter="url(#cGlow)">
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="40s" repeatCount="indefinite"/>
+    </ellipse>
+    <!-- Major ring 3 (opposite tilt) -->
+    <ellipse cx="0" cy="0" rx="130" ry="50" stroke="#ff6a00" stroke-width="1" fill="none" opacity="0.15" transform="rotate(90)">
+      <animateTransform attributeName="transform" type="rotate" from="90" to="450" dur="50s" repeatCount="indefinite"/>
+    </ellipse>
+    <!-- Major ring 4 -->
+    <ellipse cx="0" cy="0" rx="130" ry="50" stroke="#ff6a00" stroke-width="0.8" fill="none" opacity="0.1" transform="rotate(45)">
+      <animateTransform attributeName="transform" type="rotate" from="45" to="405" dur="55s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="0" cy="0" rx="130" ry="50" stroke="#ff6a00" stroke-width="0.8" fill="none" opacity="0.1" transform="rotate(135)">
+      <animateTransform attributeName="transform" type="rotate" from="135" to="495" dur="45s" repeatCount="indefinite"/>
+    </ellipse>
+
+    <!-- Inner structural rings -->
+    <ellipse cx="0" cy="0" rx="90" ry="35" stroke="#ff6a00" stroke-width="2" fill="none" opacity="0.25" filter="url(#cGlow)">
+      <animateTransform attributeName="transform" type="rotate" from="30" to="390" dur="30s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="0" cy="0" rx="90" ry="35" stroke="#ff6a00" stroke-width="1.5" fill="none" opacity="0.2" transform="rotate(60)">
+      <animateTransform attributeName="transform" type="rotate" from="60" to="420" dur="35s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="0" cy="0" rx="90" ry="35" stroke="#ff6a00" stroke-width="1" fill="none" opacity="0.15" transform="rotate(120)">
+      <animateTransform attributeName="transform" type="rotate" from="120" to="480" dur="28s" repeatCount="indefinite"/>
+    </ellipse>
+
+    <!-- Energy collection panels (dots on rings) -->
+    <g fill="#ff6a00" opacity="0.4">
+      <circle cx="90" cy="0" r="3">
+        <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="30s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="-90" cy="0" r="2.5">
+        <animateTransform attributeName="transform" type="rotate" from="180 0 0" to="540 0 0" dur="30s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="0" cy="90" r="2">
+        <animateTransform attributeName="transform" type="rotate" from="90 0 0" to="450 0 0" dur="35s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+
+    <!-- Central star -->
+    <circle cx="0" cy="0" r="35" fill="url(#dysonStar)" filter="url(#cGlow2)">
+      <animate attributeName="r" values="35;37;35" dur="4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="0" cy="0" r="20" fill="#ffd700" opacity="0.6"/>
+    <circle cx="0" cy="0" r="10" fill="#ffffff" opacity="0.8"/>
+
+    <!-- Energy beams from star to ring nodes -->
+    <g stroke="#ffd700" stroke-width="0.5" opacity="0.15">
+      <line x1="20" y1="0" x2="87" y2="0">
+        <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="30s" repeatCount="indefinite"/>
+      </line>
+      <line x1="-20" y1="0" x2="-87" y2="0">
+        <animateTransform attributeName="transform" type="rotate" from="180 0 0" to="540 0 0" dur="30s" repeatCount="indefinite"/>
+      </line>
+    </g>
+
+    <!-- Solar flares -->
+    <g filter="url(#cGlow)" opacity="0.3">
+      <path d="M25,-15 Q40,-30 30,-50" stroke="#ffd700" stroke-width="1" fill="none">
+        <animate attributeName="d" values="M25,-15 Q40,-30 30,-50;M25,-15 Q45,-25 35,-48;M25,-15 Q40,-30 30,-50" dur="5s" repeatCount="indefinite"/>
+      </path>
+      <path d="M-20,20 Q-35,35 -25,55" stroke="#ff8c00" stroke-width="0.8" fill="none">
+        <animate attributeName="d" values="M-20,20 Q-35,35 -25,55;M-20,20 Q-40,30 -30,52;M-20,20 Q-35,35 -25,55" dur="6s" repeatCount="indefinite"/>
+      </path>
+    </g>
+  </g>
+
+  <!-- Earth with orbital megastructures (bottom left) -->
+  <g transform="translate(100, 380)">
+    <circle cx="0" cy="0" r="40" fill="#0a1828"/>
+    <!-- Surface hints -->
+    <path d="M-20,-25 Q-5,-30 10,-22 Q20,-18 25,-25" stroke="#00f5ff" stroke-width="0.5" fill="#00f5ff" fill-opacity="0.03" stroke-opacity="0.2"/>
+    <path d="M-25,5 Q-10,0 5,8 Q15,5 25,12" stroke="#00ff88" stroke-width="0.5" fill="none" stroke-opacity="0.15"/>
+    <!-- Atmosphere -->
+    <circle cx="0" cy="0" r="43" stroke="#00f5ff" stroke-width="1" fill="none" opacity="0.1" filter="url(#cGlow)"/>
+    <!-- Orbital ring (megastructure) -->
+    <ellipse cx="0" cy="0" rx="60" ry="10" stroke="#ff6a00" stroke-width="1" fill="none" opacity="0.3" transform="rotate(-20)" filter="url(#cGlow)"/>
+    <ellipse cx="0" cy="0" rx="55" ry="8" stroke="#ff6a00" stroke-width="0.5" fill="none" opacity="0.2" transform="rotate(-20)"/>
+    <!-- Space elevators -->
+    <line x1="0" y1="-40" x2="5" y2="-70" stroke="#00f5ff" stroke-width="0.5" opacity="0.2"/>
+    <circle cx="5" cy="-72" r="2" fill="#00f5ff" opacity="0.3"/>
+    <text x="0" y="55" font-family="monospace" font-size="6" fill="#00f5ff" text-anchor="middle" opacity="0.3">EARTH 3024 CE</text>
+  </g>
+
+  <!-- Distant galaxy (top) - representing Type III scope -->
+  <g transform="translate(650, 80)" opacity="0.2" filter="url(#cGlow2)">
+    <circle cx="0" cy="0" r="5" fill="#ff6a00" opacity="0.6"/>
+    <ellipse cx="0" cy="0" rx="40" ry="12" stroke="#ff6a00" stroke-width="0.8" fill="none">
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="20s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="0" cy="0" rx="30" ry="18" stroke="#ff6a00" stroke-width="0.5" fill="none" transform="rotate(45)">
+      <animateTransform attributeName="transform" type="rotate" from="45" to="405" dur="25s" repeatCount="indefinite"/>
+    </ellipse>
+    <text x="0" y="30" font-family="monospace" font-size="5" fill="#ff6a00" text-anchor="middle" opacity="0.4">MILKY WAY</text>
+  </g>
+
+  <!-- Energy transfer beams (between structures) -->
+  <g stroke="#ff6a00" stroke-width="0.5" opacity="0.08" stroke-dasharray="4 8">
+    <line x1="140" y1="370" x2="280" y2="280"/>
+    <line x1="530" y1="250" x2="620" y2="100"/>
+  </g>
+
+  <!-- Construction drones/ships near Dyson sphere -->
+  <g filter="url(#cGlow)">
+    <polygon points="-3,-1 3,0 -3,1" fill="#ff6a00" opacity="0.5">
+      <animateMotion dur="15s" repeatCount="indefinite" path="M300,150 Q400,120 500,150 Q530,200 500,250 Q400,280 300,250 Q270,200 300,150"/>
+    </polygon>
+    <polygon points="-2,-1 2,0 -2,1" fill="#ff6a00" opacity="0.4">
+      <animateMotion dur="20s" repeatCount="indefinite" path="M350,130 Q450,100 530,170 Q540,250 450,300 Q350,280 300,200 Q310,150 350,130"/>
+    </polygon>
+  </g>
+
+  <!-- Scale / timeline bar at bottom -->
+  <g transform="translate(200, 470)">
+    <line x1="0" y1="0" x2="400" y2="0" stroke="#ff6a00" stroke-opacity="0.2" stroke-width="1"/>
+    <g font-family="monospace" font-size="6" fill="#ff6a00" text-anchor="middle" opacity="0.3">
+      <line x1="0" y1="-3" x2="0" y2="3" stroke="#ff6a00" stroke-opacity="0.3"/>
+      <text x="0" y="-8">TYPE 0</text>
+      <line x1="133" y1="-3" x2="133" y2="3" stroke="#ff6a00" stroke-opacity="0.3"/>
+      <text x="133" y="-8">TYPE I</text>
+      <line x1="266" y1="-3" x2="266" y2="3" stroke="#ff6a00" stroke-opacity="0.3"/>
+      <text x="266" y="-8">TYPE II</text>
+      <line x1="400" y1="-3" x2="400" y2="3" stroke="#ff6a00" stroke-opacity="0.3"/>
+      <text x="400" y="-8">TYPE III</text>
+    </g>
+    <!-- Progress marker -->
+    <circle cx="50" cy="0" r="3" fill="#00f5ff" opacity="0.5" filter="url(#cGlow)">
+      <animate attributeName="cx" values="50;55;50" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <text x="50" y="12" font-family="monospace" font-size="5" fill="#00f5ff" text-anchor="middle" opacity="0.4">WE ARE HERE</text>
+  </g>
+
+  <!-- HUD -->
+  <g font-family="monospace" font-size="7" fill="#ff6a00" opacity="0.2">
+    <text x="20" y="25">KARDASHEV SCALE VISUALIZATION</text>
+    <text x="20" y="37">DYSON SPHERE: 43% COMPLETE</text>
+    <text x="20" y="49">ENERGY HARVEST: 3.8 × 10²⁶ W</text>
+    <text x="580" y="25">CIVILIZATION STATUS: TYPE II</text>
+    <text x="580" y="37">EXPANSION VECTOR: GALACTIC</text>
+  </g>
+
+  <!-- Corner brackets -->
+  <g stroke="#ff6a00" stroke-opacity="0.12" fill="none" stroke-width="1">
+    <path d="M15,15 L15,45 M15,15 L45,15"/>
+    <path d="M785,15 L785,45 M785,15 L755,15"/>
+    <path d="M15,485 L15,455 M15,485 L45,485"/>
+    <path d="M785,485 L785,455 M785,485 L755,485"/>
+  </g>
+</svg>

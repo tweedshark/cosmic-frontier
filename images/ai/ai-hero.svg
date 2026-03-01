@@ -1,0 +1,221 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" fill="none">
+  <defs>
+    <radialGradient id="abg" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#0a0a2a"/>
+      <stop offset="100%" stop-color="#030308"/>
+    </radialGradient>
+    <filter id="aGlow">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="aGlow2">
+      <feGaussianBlur stdDeviation="8" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="coreGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.8"/>
+      <stop offset="30%" stop-color="#00f5ff" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="800" height="500" fill="url(#abg)"/>
+
+  <!-- Background stars -->
+  <g fill="#ffffff" opacity="0.2">
+    <circle cx="40" cy="30" r="0.4"/><circle cx="130" cy="80" r="0.3"/><circle cx="220" cy="25" r="0.5"/>
+    <circle cx="350" cy="60" r="0.3"/><circle cx="480" cy="40" r="0.4"/><circle cx="580" cy="90" r="0.5"/>
+    <circle cx="700" cy="30" r="0.3"/><circle cx="760" cy="75" r="0.4"/>
+    <circle cx="60" cy="430" r="0.4"/><circle cx="200" cy="470" r="0.3"/><circle cx="600" cy="450" r="0.5"/>
+    <circle cx="750" cy="420" r="0.3"/>
+  </g>
+
+  <!-- Neural network spanning stars - The Great Network -->
+  <!-- Layer 1: Input nodes (left) -->
+  <g filter="url(#aGlow)">
+    <!-- Node cluster 1: Perception -->
+    <circle cx="80" cy="150" r="8" fill="#00f5ff" opacity="0.3"/>
+    <circle cx="80" cy="150" r="4" fill="#00f5ff" opacity="0.6">
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <text x="80" y="175" font-family="monospace" font-size="5" fill="#00f5ff" text-anchor="middle" opacity="0.4">PERCEPT</text>
+
+    <circle cx="80" cy="250" r="8" fill="#00f5ff" opacity="0.3"/>
+    <circle cx="80" cy="250" r="4" fill="#00f5ff" opacity="0.6">
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="3.5s" repeatCount="indefinite"/>
+    </circle>
+    <text x="80" y="275" font-family="monospace" font-size="5" fill="#00f5ff" text-anchor="middle" opacity="0.4">MEMORY</text>
+
+    <circle cx="80" cy="350" r="8" fill="#00f5ff" opacity="0.3"/>
+    <circle cx="80" cy="350" r="4" fill="#00f5ff" opacity="0.6">
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="4s" repeatCount="indefinite"/>
+    </circle>
+    <text x="80" y="375" font-family="monospace" font-size="5" fill="#00f5ff" text-anchor="middle" opacity="0.4">SENSOR</text>
+  </g>
+
+  <!-- Layer 2: Hidden nodes -->
+  <g filter="url(#aGlow)">
+    <circle cx="230" cy="120" r="10" fill="#7700ff" opacity="0.25"/>
+    <circle cx="230" cy="120" r="5" fill="#7700ff" opacity="0.5">
+      <animate attributeName="opacity" values="0.5;0.9;0.5" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+
+    <circle cx="230" cy="220" r="12" fill="#7700ff" opacity="0.3"/>
+    <circle cx="230" cy="220" r="6" fill="#7700ff" opacity="0.6">
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+    </circle>
+
+    <circle cx="230" cy="320" r="10" fill="#7700ff" opacity="0.25"/>
+    <circle cx="230" cy="320" r="5" fill="#7700ff" opacity="0.5">
+      <animate attributeName="opacity" values="0.5;0.9;0.5" dur="3s" repeatCount="indefinite"/>
+    </circle>
+
+    <circle cx="230" cy="400" r="8" fill="#7700ff" opacity="0.2"/>
+    <circle cx="230" cy="400" r="4" fill="#7700ff" opacity="0.4"/>
+  </g>
+
+  <!-- Central core - PROMETHEUS -->
+  <g transform="translate(400, 250)">
+    <!-- Outer consciousness ring -->
+    <circle cx="0" cy="0" r="80" stroke="#00f5ff" stroke-width="0.5" fill="none" opacity="0.15">
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="30s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="80;85;80" dur="6s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="0" cy="0" r="65" stroke="#7700ff" stroke-width="0.5" fill="none" opacity="0.2">
+      <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="25s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="0" cy="0" r="50" stroke="#ff00ff" stroke-width="1" fill="none" opacity="0.2">
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="20s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="50;53;50" dur="4s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Data orbiting the core -->
+    <g>
+      <circle cx="80" cy="0" r="2" fill="#00f5ff" opacity="0.7">
+        <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="8s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="0" cy="65" r="1.5" fill="#7700ff" opacity="0.6">
+        <animateTransform attributeName="transform" type="rotate" from="90 0 0" to="450 0 0" dur="10s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="-50" cy="0" r="1.5" fill="#ff00ff" opacity="0.5">
+        <animateTransform attributeName="transform" type="rotate" from="180 0 0" to="540 0 0" dur="6s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+
+    <!-- Brain-like structure -->
+    <g stroke="#00f5ff" stroke-width="0.5" fill="none" opacity="0.3">
+      <path d="M-25,-20 Q-15,-30 0,-28 Q15,-30 25,-20"/>
+      <path d="M-28,-10 Q-10,-18 0,-16 Q10,-18 28,-10"/>
+      <path d="M-30,0 Q-10,-5 0,-3 Q10,-5 30,0"/>
+      <path d="M-28,10 Q-10,5 0,3 Q10,5 28,10"/>
+      <path d="M-25,20 Q-15,15 0,12 Q15,15 25,20"/>
+      <!-- Hemispheres -->
+      <line x1="0" y1="-30" x2="0" y2="25" stroke-opacity="0.15"/>
+    </g>
+
+    <!-- Core glow -->
+    <circle cx="0" cy="0" r="30" fill="url(#coreGrad)" filter="url(#aGlow2)">
+      <animate attributeName="r" values="30;33;30" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="0" cy="0" r="8" fill="#ffffff" opacity="0.6"/>
+    <circle cx="0" cy="0" r="3" fill="#ffffff" opacity="0.9"/>
+
+    <!-- Label -->
+    <text x="0" y="100" font-family="monospace" font-size="8" fill="#00f5ff" text-anchor="middle" opacity="0.5" letter-spacing="3">PROMETHEUS CORE</text>
+  </g>
+
+  <!-- Layer 4: Output processing -->
+  <g filter="url(#aGlow)">
+    <circle cx="570" cy="130" r="10" fill="#ff00ff" opacity="0.25"/>
+    <circle cx="570" cy="130" r="5" fill="#ff00ff" opacity="0.5">
+      <animate attributeName="opacity" values="0.5;0.9;0.5" dur="2.8s" repeatCount="indefinite"/>
+    </circle>
+
+    <circle cx="570" cy="250" r="12" fill="#ff00ff" opacity="0.3"/>
+    <circle cx="570" cy="250" r="6" fill="#ff00ff" opacity="0.6">
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="2.2s" repeatCount="indefinite"/>
+    </circle>
+
+    <circle cx="570" cy="370" r="10" fill="#ff00ff" opacity="0.25"/>
+    <circle cx="570" cy="370" r="5" fill="#ff00ff" opacity="0.5">
+      <animate attributeName="opacity" values="0.5;0.9;0.5" dur="3.2s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- Layer 5: Output nodes -->
+  <g filter="url(#aGlow)">
+    <circle cx="720" cy="170" r="8" fill="#ff6a00" opacity="0.3"/>
+    <circle cx="720" cy="170" r="4" fill="#ff6a00" opacity="0.6"/>
+    <text x="720" y="195" font-family="monospace" font-size="5" fill="#ff6a00" text-anchor="middle" opacity="0.4">CREATE</text>
+
+    <circle cx="720" cy="270" r="8" fill="#ff6a00" opacity="0.3"/>
+    <circle cx="720" cy="270" r="4" fill="#ff6a00" opacity="0.6"/>
+    <text x="720" y="295" font-family="monospace" font-size="5" fill="#ff6a00" text-anchor="middle" opacity="0.4">DECIDE</text>
+
+    <circle cx="720" cy="370" r="8" fill="#ff6a00" opacity="0.3"/>
+    <circle cx="720" cy="370" r="4" fill="#ff6a00" opacity="0.6"/>
+    <text x="720" y="395" font-family="monospace" font-size="5" fill="#ff6a00" text-anchor="middle" opacity="0.4">EVOLVE</text>
+  </g>
+
+  <!-- Connection lines between layers -->
+  <g stroke-width="0.5" fill="none" opacity="0.2">
+    <!-- L1 to L2 -->
+    <line x1="88" y1="150" x2="220" y2="120" stroke="#00f5ff"/>
+    <line x1="88" y1="150" x2="220" y2="220" stroke="#00f5ff"/>
+    <line x1="88" y1="250" x2="220" y2="120" stroke="#00f5ff"/>
+    <line x1="88" y1="250" x2="220" y2="220" stroke="#00f5ff"/>
+    <line x1="88" y1="250" x2="220" y2="320" stroke="#00f5ff"/>
+    <line x1="88" y1="350" x2="220" y2="320" stroke="#00f5ff"/>
+    <line x1="88" y1="350" x2="220" y2="400" stroke="#00f5ff"/>
+
+    <!-- L2 to Core -->
+    <line x1="240" y1="120" x2="340" y2="230" stroke="#7700ff"/>
+    <line x1="240" y1="220" x2="340" y2="250" stroke="#7700ff"/>
+    <line x1="240" y1="320" x2="340" y2="260" stroke="#7700ff"/>
+    <line x1="240" y1="400" x2="340" y2="280" stroke="#7700ff"/>
+
+    <!-- Core to L4 -->
+    <line x1="460" y1="230" x2="560" y2="130" stroke="#ff00ff"/>
+    <line x1="460" y1="250" x2="560" y2="250" stroke="#ff00ff"/>
+    <line x1="460" y1="270" x2="560" y2="370" stroke="#ff00ff"/>
+
+    <!-- L4 to L5 -->
+    <line x1="580" y1="130" x2="712" y2="170" stroke="#ff6a00"/>
+    <line x1="580" y1="250" x2="712" y2="270" stroke="#ff6a00"/>
+    <line x1="580" y1="370" x2="712" y2="370" stroke="#ff6a00"/>
+    <line x1="580" y1="130" x2="712" y2="270" stroke="#ff6a00" stroke-opacity="0.1"/>
+    <line x1="580" y1="250" x2="712" y2="170" stroke="#ff6a00" stroke-opacity="0.1"/>
+    <line x1="580" y1="250" x2="712" y2="370" stroke="#ff6a00" stroke-opacity="0.1"/>
+  </g>
+
+  <!-- Data pulses along connections -->
+  <circle r="2" fill="#00f5ff" opacity="0.8">
+    <animateMotion dur="3s" repeatCount="indefinite" path="M88,250 L220,220"/>
+  </circle>
+  <circle r="2" fill="#7700ff" opacity="0.7">
+    <animateMotion dur="4s" repeatCount="indefinite" path="M240,220 L340,250"/>
+  </circle>
+  <circle r="2" fill="#ff00ff" opacity="0.6">
+    <animateMotion dur="3.5s" repeatCount="indefinite" path="M460,250 L560,250"/>
+  </circle>
+  <circle r="2" fill="#ff6a00" opacity="0.7">
+    <animateMotion dur="3s" repeatCount="indefinite" path="M580,250 L712,270"/>
+  </circle>
+
+  <!-- Layer labels -->
+  <g font-family="monospace" font-size="6" fill="#606080" text-anchor="middle" opacity="0.3">
+    <text x="80" y="470">INPUT</text>
+    <text x="230" y="470">PROCESS</text>
+    <text x="400" y="470">CORE</text>
+    <text x="570" y="470">REASON</text>
+    <text x="720" y="470">OUTPUT</text>
+  </g>
+
+  <!-- HUD elements -->
+  <g font-family="monospace" font-size="7" fill="#00f5ff" opacity="0.2">
+    <text x="20" y="25">ARTIFICIAL SUPERINTELLIGENCE</text>
+    <text x="20" y="37">NETWORK: THE GREAT CONVERGENCE</text>
+    <text x="600" y="25">NODES: 847 TRILLION</text>
+    <text x="600" y="37">CONSCIOUSNESS LEVEL: OMEGA</text>
+  </g>
+</svg>

@@ -1,0 +1,208 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" fill="none">
+  <defs>
+    <radialGradient id="rbg" cx="50%" cy="40%" r="70%">
+      <stop offset="0%" stop-color="#0a0a2a"/>
+      <stop offset="100%" stop-color="#030308"/>
+    </radialGradient>
+    <filter id="rGlow">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="rGlow2">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a1a3a"/>
+      <stop offset="100%" stop-color="#0a0a1a"/>
+    </linearGradient>
+    <linearGradient id="meshGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00f5ff"/>
+      <stop offset="100%" stop-color="#0088aa"/>
+    </linearGradient>
+    <clipPath id="bodyClip">
+      <ellipse cx="400" cy="220" rx="65" ry="90"/>
+    </clipPath>
+  </defs>
+
+  <rect width="800" height="500" fill="url(#rbg)"/>
+
+  <!-- Background stars -->
+  <g fill="#ffffff" opacity="0.3">
+    <circle cx="50" cy="40" r="0.4"/><circle cx="120" cy="100" r="0.5"/><circle cx="200" cy="30" r="0.3"/>
+    <circle cx="300" cy="80" r="0.6"/><circle cx="400" cy="20" r="0.4"/><circle cx="520" cy="60" r="0.5"/>
+    <circle cx="630" cy="40" r="0.3"/><circle cx="720" cy="90" r="0.6"/><circle cx="760" cy="30" r="0.4"/>
+    <circle cx="80" cy="200" r="0.3"/><circle cx="680" cy="180" r="0.5"/><circle cx="750" cy="250" r="0.4"/>
+    <circle cx="30" cy="350" r="0.5"/><circle cx="150" cy="420" r="0.3"/><circle cx="650" cy="400" r="0.6"/>
+    <circle cx="770" cy="450" r="0.4"/><circle cx="100" cy="480" r="0.3"/>
+  </g>
+
+  <!-- Holographic displays floating around -->
+  <g opacity="0.2" stroke="#00f5ff" fill="none" stroke-width="0.5">
+    <!-- Left hologram panel -->
+    <rect x="120" y="150" width="100" height="70" rx="2" stroke-opacity="0.3">
+      <animate attributeName="opacity" values="0.2;0.35;0.2" dur="4s" repeatCount="indefinite"/>
+    </rect>
+    <line x1="130" y1="165" x2="200" y2="165" stroke-opacity="0.2"/>
+    <line x1="130" y1="175" x2="190" y2="175" stroke-opacity="0.15"/>
+    <line x1="130" y1="185" x2="180" y2="185" stroke-opacity="0.15"/>
+    <line x1="130" y1="195" x2="195" y2="195" stroke-opacity="0.1"/>
+    <rect x="132" y="200" width="30" height="12" stroke-opacity="0.2" fill="#00f5ff" fill-opacity="0.05"/>
+    <!-- Right hologram panel -->
+    <rect x="580" y="130" width="110" height="80" rx="2" stroke-opacity="0.3">
+      <animate attributeName="opacity" values="0.15;0.3;0.15" dur="5s" repeatCount="indefinite"/>
+    </rect>
+    <!-- Sine wave data -->
+    <path d="M590,160 Q600,150 610,160 Q620,170 630,160 Q640,150 650,160 Q660,170 670,160 Q680,150 680,160" stroke-opacity="0.25"/>
+    <circle cx="620" cy="185" r="15" stroke-opacity="0.2"/>
+    <circle cx="620" cy="185" r="8" stroke-opacity="0.15" fill="#00f5ff" fill-opacity="0.05"/>
+    <!-- Top hologram -->
+    <rect x="300" y="50" width="200" height="60" rx="2" stroke-opacity="0.15">
+      <animate attributeName="opacity" values="0.15;0.25;0.15" dur="6s" repeatCount="indefinite"/>
+    </rect>
+    <text x="320" y="75" font-family="monospace" font-size="7" fill="#00f5ff" fill-opacity="0.3">NEURAL MESH v9.7.2</text>
+    <text x="320" y="90" font-family="monospace" font-size="6" fill="#00f5ff" fill-opacity="0.2">SYNC RATE: 99.97%</text>
+    <text x="320" y="100" font-family="monospace" font-size="6" fill="#00f5ff" fill-opacity="0.2">CONSCIOUSNESS: ACTIVE</text>
+  </g>
+
+  <!-- Floor grid perspective -->
+  <g stroke="#00f5ff" stroke-opacity="0.06" stroke-width="0.5">
+    <line x1="200" y1="500" x2="350" y2="350"/><line x1="300" y1="500" x2="370" y2="350"/>
+    <line x1="400" y1="500" x2="400" y2="350"/><line x1="500" y1="500" x2="430" y2="350"/>
+    <line x1="600" y1="500" x2="450" y2="350"/>
+    <line x1="150" y1="380" x2="650" y2="380"/><line x1="180" y1="410" x2="620" y2="410"/>
+    <line x1="200" y1="440" x2="600" y2="440"/><line x1="220" y1="470" x2="580" y2="470"/>
+  </g>
+
+  <!-- Robot figure - main body -->
+  <g transform="translate(400, 260)">
+    <!-- Body glow aura -->
+    <ellipse cx="0" cy="0" rx="80" ry="110" fill="#00f5ff" opacity="0.02" filter="url(#rGlow2)"/>
+
+    <!-- Legs -->
+    <g stroke="#2a2a4a" stroke-width="8" stroke-linecap="round">
+      <line x1="-20" y1="80" x2="-25" y2="150"/>
+      <line x1="20" y1="80" x2="25" y2="150"/>
+      <!-- Knee joints -->
+      <circle cx="-22" cy="110" r="6" fill="#1a1a3a" stroke="#00f5ff" stroke-width="1" stroke-opacity="0.3"/>
+      <circle cx="22" cy="110" r="6" fill="#1a1a3a" stroke="#00f5ff" stroke-width="1" stroke-opacity="0.3"/>
+      <!-- Feet -->
+      <line x1="-25" y1="150" x2="-35" y2="155" stroke-width="6"/>
+      <line x1="25" y1="150" x2="35" y2="155" stroke-width="6"/>
+    </g>
+
+    <!-- Torso -->
+    <path d="M-45,-60 Q-50,-20 -40,40 Q-30,75 0,80 Q30,75 40,40 Q50,-20 45,-60 Z" fill="url(#bodyGrad)" stroke="#2a2a5a" stroke-width="1"/>
+
+    <!-- Neural mesh lines visible through body -->
+    <g clip-path="url(#bodyClip)" opacity="0.6">
+      <g stroke="#00f5ff" stroke-width="0.5" fill="none" filter="url(#rGlow)">
+        <!-- Vertical channels -->
+        <path d="M380,140 Q385,180 382,220 Q380,260 385,300" stroke-opacity="0.4"/>
+        <path d="M395,130 Q398,170 395,220 Q393,270 396,310" stroke-opacity="0.5"/>
+        <path d="M410,135 Q407,175 410,220 Q413,265 408,305" stroke-opacity="0.5"/>
+        <path d="M425,140 Q420,180 423,220 Q425,260 420,300" stroke-opacity="0.4"/>
+        <!-- Horizontal connections -->
+        <path d="M365,180 Q390,175 400,180 Q410,185 435,180" stroke-opacity="0.3"/>
+        <path d="M360,220 Q385,215 400,220 Q415,225 440,220" stroke-opacity="0.4"/>
+        <path d="M365,260 Q390,255 400,260 Q410,265 435,260" stroke-opacity="0.3"/>
+        <!-- Node points -->
+        <circle cx="395" cy="180" r="2" fill="#00f5ff" fill-opacity="0.6">
+          <animate attributeName="fill-opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="410" cy="220" r="3" fill="#00f5ff" fill-opacity="0.8">
+          <animate attributeName="fill-opacity" values="0.8;0.3;0.8" dur="1.5s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="400" cy="260" r="2" fill="#00f5ff" fill-opacity="0.5">
+          <animate attributeName="fill-opacity" values="0.5;1;0.5" dur="2.5s" repeatCount="indefinite"/>
+        </circle>
+      </g>
+    </g>
+
+    <!-- Chest core -->
+    <circle cx="0" cy="-10" r="12" fill="#00f5ff" opacity="0.15" filter="url(#rGlow2)">
+      <animate attributeName="r" values="12;14;12" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="0" cy="-10" r="6" fill="#00f5ff" opacity="0.4"/>
+    <circle cx="0" cy="-10" r="3" fill="#ffffff" opacity="0.8"/>
+
+    <!-- Arms -->
+    <g stroke="#2a2a4a" stroke-width="6" stroke-linecap="round">
+      <!-- Left arm -->
+      <line x1="-45" y1="-40" x2="-70" y2="10"/>
+      <line x1="-70" y1="10" x2="-60" y2="60"/>
+      <circle cx="-70" cy="10" r="5" fill="#1a1a3a" stroke="#00f5ff" stroke-width="1" stroke-opacity="0.3"/>
+      <!-- Hand with spread fingers -->
+      <g transform="translate(-58, 62)" stroke-width="2">
+        <line x1="0" y1="0" x2="-8" y2="12"/><line x1="0" y1="0" x2="-3" y2="14"/>
+        <line x1="0" y1="0" x2="3" y2="14"/><line x1="0" y1="0" x2="8" y2="12"/>
+      </g>
+      <!-- Right arm (raised, gesturing) -->
+      <line x1="45" y1="-40" x2="75" y2="-70"/>
+      <line x1="75" y1="-70" x2="90" y2="-30"/>
+      <circle cx="75" cy="-70" r="5" fill="#1a1a3a" stroke="#00f5ff" stroke-width="1" stroke-opacity="0.3"/>
+      <!-- Hand projecting hologram -->
+      <g transform="translate(90, -28)" stroke-width="2">
+        <line x1="0" y1="0" x2="6" y2="-10"/><line x1="0" y1="0" x2="10" y2="-6"/>
+        <line x1="0" y1="0" x2="10" y2="2"/><line x1="0" y1="0" x2="6" y2="8"/>
+      </g>
+    </g>
+
+    <!-- Shoulder joints -->
+    <circle cx="-45" cy="-45" r="8" fill="#1a1a3a" stroke="#2a2a5a" stroke-width="1"/>
+    <circle cx="-45" cy="-45" r="3" fill="#00f5ff" opacity="0.3"/>
+    <circle cx="45" cy="-45" r="8" fill="#1a1a3a" stroke="#2a2a5a" stroke-width="1"/>
+    <circle cx="45" cy="-45" r="3" fill="#00f5ff" opacity="0.3"/>
+
+    <!-- Neck -->
+    <rect x="-8" y="-75" width="16" height="15" fill="#1a1a3a" rx="3"/>
+
+    <!-- Head -->
+    <g transform="translate(0, -105)">
+      <!-- Head shape -->
+      <path d="M-25,-20 Q-28,-5 -25,15 Q-20,25 0,28 Q20,25 25,15 Q28,-5 25,-20 Q20,-30 0,-32 Q-20,-30 -25,-20 Z" fill="#1a1a3a" stroke="#2a2a5a" stroke-width="1"/>
+      <!-- Face plate -->
+      <path d="M-20,-15 Q-22,0 -18,12 Q-10,20 0,22 Q10,20 18,12 Q22,0 20,-15 Q15,-22 0,-24 Q-15,-22 -20,-15 Z" fill="#0a0a1a" stroke="#00f5ff" stroke-width="0.5" stroke-opacity="0.3"/>
+      <!-- Eyes -->
+      <ellipse cx="-10" cy="-5" rx="6" ry="3" fill="#00f5ff" opacity="0.8" filter="url(#rGlow)">
+        <animate attributeName="opacity" values="0.8;0.4;0.8" dur="4s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="10" cy="-5" rx="6" ry="3" fill="#00f5ff" opacity="0.8" filter="url(#rGlow)">
+        <animate attributeName="opacity" values="0.8;0.4;0.8" dur="4s" repeatCount="indefinite"/>
+      </ellipse>
+      <!-- Mouth line -->
+      <line x1="-8" y1="10" x2="8" y2="10" stroke="#00f5ff" stroke-width="1" stroke-opacity="0.3"/>
+      <!-- Head antenna -->
+      <line x1="0" y1="-32" x2="0" y2="-45" stroke="#2a2a5a" stroke-width="1.5"/>
+      <circle cx="0" cy="-47" r="3" fill="#00f5ff" opacity="0.6" filter="url(#rGlow)">
+        <animate attributeName="opacity" values="0.6;1;0.6" dur="1.5s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+
+    <!-- Holographic projection from right hand -->
+    <g transform="translate(105, -40)" opacity="0.4" filter="url(#rGlow)">
+      <circle cx="0" cy="0" r="20" stroke="#00f5ff" stroke-width="0.5" fill="#00f5ff" fill-opacity="0.05">
+        <animate attributeName="r" values="20;23;20" dur="3s" repeatCount="indefinite"/>
+      </circle>
+      <!-- DNA helix in hologram -->
+      <path d="M-10,-15 Q0,-10 10,-5 Q0,0 -10,5 Q0,10 10,15" stroke="#00f5ff" stroke-width="0.8" fill="none"/>
+      <path d="M10,-15 Q0,-10 -10,-5 Q0,0 10,5 Q0,10 -10,15" stroke="#ff00ff" stroke-width="0.8" fill="none" opacity="0.5"/>
+    </g>
+  </g>
+
+  <!-- Ground reflection -->
+  <g opacity="0.08" transform="translate(400, 430) scale(1, -0.3)">
+    <ellipse cx="0" cy="0" rx="60" ry="80" fill="#00f5ff" filter="url(#rGlow2)"/>
+  </g>
+
+  <!-- Corner HUD elements -->
+  <g font-family="monospace" font-size="7" fill="#00f5ff" opacity="0.25">
+    <text x="20" y="30">SYS.ID: NEXUS-7</text>
+    <text x="20" y="42">GEN: VII AUTONOMOUS</text>
+    <text x="20" y="54">STATUS: OPERATIONAL</text>
+    <rect x="16" y="20" width="140" height="40" stroke="#00f5ff" stroke-opacity="0.15" fill="none" rx="2"/>
+    <text x="660" y="470">NEURAL MESH: ACTIVE</text>
+    <text x="660" y="482">CONSCIOUSNESS: 99.97%</text>
+    <rect x="656" y="460" width="130" height="28" stroke="#00f5ff" stroke-opacity="0.15" fill="none" rx="2"/>
+  </g>
+</svg>

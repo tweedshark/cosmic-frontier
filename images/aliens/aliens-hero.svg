@@ -1,0 +1,222 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" fill="none">
+  <defs>
+    <radialGradient id="xbg" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#0a0a2a"/>
+      <stop offset="100%" stop-color="#030308"/>
+    </radialGradient>
+    <radialGradient id="planetGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00ff88" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+    <filter id="xGlow">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="xGlow2">
+      <feGaussianBlur stdDeviation="8" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="xGlow3">
+      <feGaussianBlur stdDeviation="15" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="beamGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#00ff88" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#00ff88" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="500" fill="url(#xbg)"/>
+
+  <!-- Background stars -->
+  <g fill="#ffffff" opacity="0.25">
+    <circle cx="30" cy="30" r="0.4"/><circle cx="90" cy="110" r="0.5"/><circle cx="170" cy="40" r="0.3"/>
+    <circle cx="260" cy="70" r="0.6"/><circle cx="340" cy="30" r="0.4"/><circle cx="440" cy="60" r="0.5"/>
+    <circle cx="530" cy="25" r="0.3"/><circle cx="610" cy="80" r="0.6"/><circle cx="700" cy="40" r="0.4"/>
+    <circle cx="760" cy="100" r="0.5"/><circle cx="50" cy="200" r="0.3"/><circle cx="750" cy="200" r="0.4"/>
+    <circle cx="20" cy="420" r="0.5"/><circle cx="780" cy="440" r="0.3"/>
+  </g>
+
+  <!-- Alien planet in background (top right) -->
+  <g transform="translate(650, 100)">
+    <circle cx="0" cy="0" r="70" fill="#0a1a1a" opacity="0.8"/>
+    <circle cx="0" cy="0" r="70" stroke="#00ff88" stroke-width="1" fill="none" opacity="0.15"/>
+    <!-- Atmosphere -->
+    <circle cx="0" cy="0" r="73" stroke="#00ff88" stroke-width="2" fill="none" opacity="0.08" filter="url(#xGlow)"/>
+    <circle cx="0" cy="0" r="78" stroke="#00ff88" stroke-width="1" fill="none" opacity="0.04" filter="url(#xGlow2)"/>
+    <!-- Surface features -->
+    <path d="M-40,-40 Q-20,-50 0,-40 Q20,-35 35,-45" stroke="#00ff88" stroke-width="0.5" fill="none" opacity="0.15"/>
+    <path d="M-50,10 Q-20,5 10,15 Q30,10 50,20" stroke="#00ff88" stroke-width="0.5" fill="none" opacity="0.1"/>
+    <ellipse cx="15" cy="-15" rx="20" ry="12" fill="#00ff88" fill-opacity="0.03" stroke="#00ff88" stroke-width="0.3" stroke-opacity="0.1"/>
+    <!-- Ring system -->
+    <ellipse cx="0" cy="0" rx="110" ry="15" stroke="#00ff88" stroke-width="0.5" fill="none" opacity="0.1" transform="rotate(-20)"/>
+    <ellipse cx="0" cy="0" rx="100" ry="12" stroke="#00ff88" stroke-width="0.3" fill="none" opacity="0.08" transform="rotate(-20)"/>
+  </g>
+
+  <!-- Surface/ground of alien world -->
+  <g>
+    <!-- Ground plane -->
+    <path d="M0,420 Q200,400 400,410 Q600,420 800,400 L800,500 L0,500 Z" fill="#050510" stroke="#00ff88" stroke-width="0.5" stroke-opacity="0.1"/>
+    <!-- Alien crystalline structures -->
+    <!-- Large crystal (center-left) -->
+    <g transform="translate(250, 380)" filter="url(#xGlow)">
+      <polygon points="0,-80 15,-30 25,0 -25,0 -15,-30" fill="#00ff88" fill-opacity="0.06" stroke="#00ff88" stroke-width="0.8" stroke-opacity="0.4"/>
+      <polygon points="0,-80 -10,-40 -20,0 -25,0 -15,-30" fill="#00ff88" fill-opacity="0.03"/>
+      <line x1="0" y1="-80" x2="0" y2="0" stroke="#00ff88" stroke-opacity="0.1" stroke-width="0.3"/>
+    </g>
+    <!-- Small crystal cluster -->
+    <g transform="translate(180, 400)" filter="url(#xGlow)">
+      <polygon points="0,-40 8,-15 12,0 -12,0 -8,-15" fill="#00ff88" fill-opacity="0.04" stroke="#00ff88" stroke-width="0.5" stroke-opacity="0.3"/>
+    </g>
+    <g transform="translate(200, 405)" filter="url(#xGlow)">
+      <polygon points="0,-30 6,-12 8,0 -8,0 -6,-12" fill="#00ff88" fill-opacity="0.03" stroke="#00ff88" stroke-width="0.5" stroke-opacity="0.25"/>
+    </g>
+    <!-- Right side crystals -->
+    <g transform="translate(550, 390)" filter="url(#xGlow)">
+      <polygon points="0,-60 12,-22 18,0 -18,0 -12,-22" fill="#7700ff" fill-opacity="0.05" stroke="#7700ff" stroke-width="0.6" stroke-opacity="0.3"/>
+    </g>
+    <g transform="translate(580, 400)" filter="url(#xGlow)">
+      <polygon points="0,-35 7,-13 10,0 -10,0 -7,-13" fill="#7700ff" fill-opacity="0.04" stroke="#7700ff" stroke-width="0.5" stroke-opacity="0.25"/>
+    </g>
+  </g>
+
+  <!-- The Crystalline Being (center) -->
+  <g transform="translate(400, 300)">
+    <!-- Energy field -->
+    <circle cx="0" cy="-40" r="60" fill="#00ff88" opacity="0.02" filter="url(#xGlow3)">
+      <animate attributeName="r" values="60;65;60" dur="4s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Main crystalline body -->
+    <g filter="url(#xGlow)">
+      <!-- Core crystal form -->
+      <polygon points="0,-120 25,-70 30,-20 20,30 0,50 -20,30 -30,-20 -25,-70" fill="#00ff88" fill-opacity="0.08" stroke="#00ff88" stroke-width="1" stroke-opacity="0.5">
+        <animate attributeName="stroke-opacity" values="0.5;0.8;0.5" dur="3s" repeatCount="indefinite"/>
+      </polygon>
+      <!-- Inner structure lines -->
+      <line x1="0" y1="-120" x2="0" y2="50" stroke="#00ff88" stroke-opacity="0.15" stroke-width="0.5"/>
+      <line x1="-25" y1="-70" x2="25" y2="-70" stroke="#00ff88" stroke-opacity="0.1" stroke-width="0.5"/>
+      <line x1="-30" y1="-20" x2="30" y2="-20" stroke="#00ff88" stroke-opacity="0.1" stroke-width="0.5"/>
+      <line x1="-20" y1="30" x2="20" y2="30" stroke="#00ff88" stroke-opacity="0.1" stroke-width="0.5"/>
+
+      <!-- Face region - geometric eye patterns -->
+      <polygon points="0,-90 12,-75 0,-65 -12,-75" fill="#00ff88" fill-opacity="0.2" stroke="#00ff88" stroke-width="0.5" stroke-opacity="0.6">
+        <animate attributeName="fill-opacity" values="0.2;0.5;0.2" dur="4s" repeatCount="indefinite"/>
+      </polygon>
+
+      <!-- Shoulder protrusions -->
+      <polygon points="25,-70 55,-60 35,-50 25,-55" fill="#00ff88" fill-opacity="0.04" stroke="#00ff88" stroke-width="0.5" stroke-opacity="0.3"/>
+      <polygon points="-25,-70 -55,-60 -35,-50 -25,-55" fill="#00ff88" fill-opacity="0.04" stroke="#00ff88" stroke-width="0.5" stroke-opacity="0.3"/>
+
+      <!-- Arm-like crystal extensions -->
+      <line x1="30" y1="-20" x2="60" y2="10" stroke="#00ff88" stroke-width="1" stroke-opacity="0.3"/>
+      <line x1="60" y1="10" x2="70" y2="40" stroke="#00ff88" stroke-width="0.8" stroke-opacity="0.2"/>
+      <line x1="-30" y1="-20" x2="-55" y2="15" stroke="#00ff88" stroke-width="1" stroke-opacity="0.3"/>
+      <line x1="-55" y1="15" x2="-50" y2="45" stroke="#00ff88" stroke-width="0.8" stroke-opacity="0.2"/>
+    </g>
+
+    <!-- Floating crystal fragments around being -->
+    <g opacity="0.4">
+      <polygon points="45,-100 50,-90 43,-85" fill="#00ff88" fill-opacity="0.3" stroke="#00ff88" stroke-width="0.3">
+        <animateTransform attributeName="transform" type="translate" values="0,0;3,-5;0,0" dur="5s" repeatCount="indefinite"/>
+      </polygon>
+      <polygon points="-50,-95 -43,-88 -52,-82" fill="#00ff88" fill-opacity="0.2" stroke="#00ff88" stroke-width="0.3">
+        <animateTransform attributeName="transform" type="translate" values="0,0;-4,-3;0,0" dur="6s" repeatCount="indefinite"/>
+      </polygon>
+      <polygon points="55,-50 62,-42 53,-38" fill="#00ff88" fill-opacity="0.15" stroke="#00ff88" stroke-width="0.3">
+        <animateTransform attributeName="transform" type="translate" values="0,0;5,-2;0,0" dur="4s" repeatCount="indefinite"/>
+      </polygon>
+    </g>
+
+    <!-- Communication beam (reaching upward) -->
+    <g opacity="0.15">
+      <line x1="0" y1="-120" x2="-20" y2="-250" stroke="#00ff88" stroke-width="2" filter="url(#xGlow)"/>
+      <line x1="0" y1="-120" x2="20" y2="-250" stroke="#00ff88" stroke-width="2" filter="url(#xGlow)"/>
+      <line x1="0" y1="-120" x2="0" y2="-280" stroke="#ffffff" stroke-width="1"/>
+      <!-- Signal pulses -->
+      <circle cx="0" cy="-180" r="3" fill="#00ff88" opacity="0.5">
+        <animate attributeName="cy" values="-130;-280" dur="2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.5;0" dur="2s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+  </g>
+
+  <!-- Human delegation (left side, smaller, approaching) -->
+  <g transform="translate(150, 370)" opacity="0.5">
+    <!-- Human figures (simplified) -->
+    <g fill="#00f5ff" stroke="#00f5ff" stroke-width="0.5">
+      <!-- Figure 1 -->
+      <circle cx="0" cy="-25" r="4"/><line x1="0" y1="-21" x2="0" y2="-5"/><line x1="0" y1="-5" x2="-5" y2="10"/><line x1="0" y1="-5" x2="5" y2="10"/>
+      <line x1="0" y1="-15" x2="8" y2="-8"/><line x1="0" y1="-15" x2="-6" y2="-10"/>
+      <!-- Figure 2 -->
+      <g transform="translate(20, 5)">
+        <circle cx="0" cy="-25" r="3.5"/><line x1="0" y1="-21" x2="0" y2="-5"/><line x1="0" y1="-5" x2="-4" y2="8"/><line x1="0" y1="-5" x2="4" y2="8"/>
+        <line x1="0" y1="-15" x2="7" y2="-9"/><line x1="0" y1="-15" x2="-5" y2="-10"/>
+      </g>
+      <!-- Figure 3 -->
+      <g transform="translate(-15, 8)">
+        <circle cx="0" cy="-25" r="3"/><line x1="0" y1="-22" x2="0" y2="-7"/><line x1="0" y1="-7" x2="-3" y2="6"/><line x1="0" y1="-7" x2="3" y2="6"/>
+      </g>
+    </g>
+    <!-- Diplomatic shield/translator device -->
+    <circle cx="10" cy="-30" r="15" stroke="#00f5ff" stroke-width="0.5" fill="#00f5ff" fill-opacity="0.03" stroke-dasharray="2 2">
+      <animate attributeName="r" values="15;17;15" dur="3s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- Communication waves between humans and alien -->
+  <g stroke="#00f5ff" stroke-width="0.3" fill="none" opacity="0.15">
+    <path d="M170,350 Q280,330 370,310">
+      <animate attributeName="stroke-opacity" values="0.15;0.3;0.15" dur="2s" repeatCount="indefinite"/>
+    </path>
+    <path d="M175,355 Q280,340 375,320" stroke-dasharray="3 3">
+      <animate attributeName="stroke-opacity" values="0.1;0.25;0.1" dur="2.5s" repeatCount="indefinite"/>
+    </path>
+  </g>
+
+  <!-- Alien signal response -->
+  <g stroke="#00ff88" stroke-width="0.3" fill="none" opacity="0.15">
+    <path d="M380,290 Q280,310 180,340">
+      <animate attributeName="stroke-opacity" values="0.1;0.25;0.1" dur="3s" repeatCount="indefinite"/>
+    </path>
+  </g>
+
+  <!-- Bioluminescent particles in atmosphere -->
+  <g fill="#00ff88" opacity="0.3">
+    <circle cx="300" cy="200" r="1">
+      <animate attributeName="cy" values="200;180;200" dur="6s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.3;0.6;0.3" dur="6s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="450" cy="180" r="0.8">
+      <animate attributeName="cy" values="180;160;180" dur="5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.2;0.5;0.2" dur="5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="350" cy="250" r="1.2">
+      <animate attributeName="cy" values="250;230;250" dur="7s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.25;0.5;0.25" dur="7s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="500" cy="220" r="0.7">
+      <animate attributeName="cy" values="220;200;220" dur="4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="200" cy="300" r="0.9">
+      <animate attributeName="cy" values="300;280;300" dur="8s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- HUD overlay -->
+  <g font-family="monospace" font-size="7" fill="#00ff88" opacity="0.2">
+    <text x="20" y="25">FIRST CONTACT PROTOCOL</text>
+    <text x="20" y="37">SPECIES: CRYSTALLINE ENTITIES</text>
+    <text x="20" y="49">DESIGNATION: THE RESONANCE</text>
+    <text x="600" y="25">KEPLER-442b SURFACE</text>
+    <text x="600" y="37">TRANSLATION: 73% DECODED</text>
+  </g>
+
+  <!-- Border frame -->
+  <g stroke="#00ff88" stroke-opacity="0.1" fill="none" stroke-width="1">
+    <path d="M15,15 L15,45 M15,15 L45,15"/>
+    <path d="M785,15 L785,45 M785,15 L755,15"/>
+    <path d="M15,485 L15,455 M15,485 L45,485"/>
+    <path d="M785,485 L785,455 M785,485 L755,485"/>
+  </g>
+</svg>

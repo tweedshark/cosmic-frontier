@@ -2642,3 +2642,143 @@ body {
         margin-top: 0;
     }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   SECTION HERO IMAGES
+   ═══════════════════════════════════════════════════════════════ */
+
+.hero-banner-image {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    opacity: 0.25;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.hero-banner-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.section-hero-image {
+    margin: 0 0 3rem 0;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 245, 255, 0.08);
+    background: rgba(3, 3, 8, 0.6);
+}
+
+.section-hero-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-height: 400px;
+    object-fit: cover;
+}
+
+.section-hero-image::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        transparent 60%,
+        rgba(3, 3, 8, 0.8) 100%
+    );
+    z-index: 1;
+    pointer-events: none;
+}
+
+.section-hero-image::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        var(--plasma-cyan, #00f5ff) 20%,
+        var(--plasma-cyan, #00f5ff) 80%,
+        transparent
+    );
+    opacity: 0.2;
+    z-index: 2;
+}
+
+/* Section-specific hero image border colors */
+.physics-section .section-hero-image {
+    border-color: rgba(119, 0, 255, 0.1);
+}
+
+.physics-section .section-hero-image::after {
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #7700ff 20%,
+        #7700ff 80%,
+        transparent
+    );
+}
+
+.ai-section .section-hero-image {
+    border-color: rgba(0, 245, 255, 0.1);
+}
+
+.aliens-section .section-hero-image {
+    border-color: rgba(0, 255, 136, 0.1);
+}
+
+.aliens-section .section-hero-image::after {
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #00ff88 20%,
+        #00ff88 80%,
+        transparent
+    );
+}
+
+.space-section .section-hero-image {
+    border-color: rgba(0, 245, 255, 0.1);
+}
+
+.civ-section .section-hero-image {
+    border-color: rgba(255, 106, 0, 0.1);
+}
+
+.civ-section .section-hero-image::after {
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #ff6a00 20%,
+        #ff6a00 80%,
+        transparent
+    );
+}
+
+/* Responsive hero images */
+@media (max-width: 768px) {
+    .section-hero-image img {
+        max-height: 250px;
+    }
+
+    .section-hero-image {
+        margin-bottom: 2rem;
+    }
+
+    .hero-banner-image {
+        opacity: 0.15;
+    }
+}
