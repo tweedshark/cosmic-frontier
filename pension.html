@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PENSION COUNTDOWN — Retirement Trajectory Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;600;700&family=Exo+2:wght@100;300;400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   PENSION COUNTDOWN — Retirement Trajectory Console
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+    --void-black: #030308;
+    --deep-space: #0a0a1a;
+    --nebula-purple: #1a0a2e;
+    --cosmic-blue: #0f1a3d;
+
+    --plasma-cyan: #00f5ff;
+    --plasma-cyan-dim: #00f5ff40;
+    --energy-orange: #ff6a00;
+    --stellar-gold: #ffd700;
+    --quantum-magenta: #ff00ff;
+    --alien-green: #00ff88;
+
+    --starlight: #ffffff;
+    --nebula-fog: #a0a0c0;
+    --dim-star: #606080;
+
+    --gradient-plasma: linear-gradient(90deg, var(--plasma-cyan), var(--quantum-magenta));
+    --gradient-energy: linear-gradient(90deg, var(--energy-orange), var(--stellar-gold));
+
+    --font-display: 'Exo 2', sans-serif;
+    --font-body: 'Chakra Petch', sans-serif;
+    --font-mono: 'Share Tech Mono', monospace;
+
+    --panel: rgba(10, 10, 26, 0.72);
+    --panel-line: rgba(0, 245, 255, 0.18);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+    font-family: var(--font-body);
+    background: var(--void-black);
+    color: var(--starlight);
+    line-height: 1.6;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+#starfield {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    background:
+        radial-gradient(ellipse at 20% 10%, rgba(26, 10, 46, 0.9) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 70%, rgba(15, 26, 61, 0.9) 0%, transparent 55%),
+        var(--void-black);
+}
+
+.scan-lines {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(0, 245, 255, 0.012) 2px, rgba(0, 245, 255, 0.012) 4px
+    );
+}
+
+.wrap {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 24px 100px;
+}
+
+/* ── Header ───────────────────────────────────────────────────── */
+header.console-head {
+    padding: 48px 0 32px;
+    border-bottom: 1px solid var(--panel-line);
+    margin-bottom: 40px;
+}
+
+.eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.32em;
+    color: var(--plasma-cyan);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+}
+.eyebrow .line { flex: 0 0 60px; height: 1px; background: linear-gradient(90deg, var(--plasma-cyan), transparent); }
+
+h1 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(2.1rem, 6vw, 4rem);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+}
+h1 .accent {
+    background: var(--gradient-plasma);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.subhead {
+    margin-top: 16px;
+    max-width: 74ch;
+    color: var(--nebula-fog);
+    font-size: 1.02rem;
+}
+
+.status-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 28px;
+    margin-top: 22px;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    color: var(--dim-star);
+    text-transform: uppercase;
+}
+.status-row b { color: var(--nebula-fog); font-weight: 400; }
+.status-dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--alien-green);
+    box-shadow: 0 0 10px var(--alien-green);
+    margin-right: 8px;
+    animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+/* ── Section scaffolding ──────────────────────────────────────── */
+section { margin-bottom: 56px; }
+
+.sec-title {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--plasma-cyan);
+    margin-bottom: 20px;
+}
+.sec-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--panel-line), transparent);
+}
+.sec-title .num { color: var(--dim-star); }
+
+/* ── Countdown ────────────────────────────────────────────────── */
+.countdown-panel {
+    background: var(--panel);
+    border: 1px solid var(--panel-line);
+    border-radius: 4px;
+    padding: 40px 32px 34px;
+    position: relative;
+    overflow: hidden;
+}
+.countdown-panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--gradient-plasma);
+    opacity: 0.85;
+}
+
+.clock {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+    gap: 12px;
+    text-align: center;
+}
+.clock .unit {
+    padding: 18px 8px;
+    border: 1px solid rgba(0, 245, 255, 0.12);
+    border-radius: 3px;
+    background: rgba(0, 245, 255, 0.03);
+}
+.clock .val {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: clamp(2rem, 5.6vw, 3.4rem);
+    line-height: 1;
+    color: var(--plasma-cyan);
+    text-shadow: 0 0 24px var(--plasma-cyan-dim);
+    font-variant-numeric: tabular-nums;
+}
+.clock .lbl {
+    display: block;
+    margin-top: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--dim-star);
+}
+
+.retire-line {
+    margin-top: 26px;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+    color: var(--nebula-fog);
+    text-transform: uppercase;
+}
+.retire-line strong { color: var(--stellar-gold); font-weight: 400; }
+
+.progress-shell {
+    margin-top: 18px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 99px;
+    overflow: hidden;
+}
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--gradient-plasma);
+    box-shadow: 0 0 18px var(--plasma-cyan-dim);
+    transition: width 0.6s ease;
+}
+.progress-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    color: var(--dim-star);
+    text-transform: uppercase;
+}
+
+/* ── Live value cards ─────────────────────────────────────────── */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(258px, 1fr));
+    gap: 16px;
+}
+.card {
+    background: var(--panel);
+    border: 1px solid var(--panel-line);
+    border-radius: 4px;
+    padding: 24px 22px;
+    position: relative;
+}
+.card.hero-card { grid-column: 1 / -1; }
+.card .k {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--dim-star);
+    display: block;
+    margin-bottom: 12px;
+}
+.card .v {
+    font-family: var(--font-mono);
+    font-size: clamp(1.7rem, 3.4vw, 2.5rem);
+    line-height: 1.05;
+    color: var(--starlight);
+    font-variant-numeric: tabular-nums;
+    word-break: break-word;
+}
+.card.hero-card .v {
+    font-size: clamp(2.4rem, 7vw, 4.4rem);
+    color: var(--alien-green);
+    text-shadow: 0 0 30px rgba(0, 255, 136, 0.28);
+}
+.card .v.gold { color: var(--stellar-gold); text-shadow: 0 0 24px rgba(255, 215, 0, 0.22); }
+.card .v.cyan { color: var(--plasma-cyan); text-shadow: 0 0 24px var(--plasma-cyan-dim); }
+.card .sub {
+    margin-top: 10px;
+    font-size: 0.84rem;
+    color: var(--nebula-fog);
+}
+.card .sub em { color: var(--dim-star); font-style: normal; }
+
+.tick-rates {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 26px;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    letter-spacing: 0.08em;
+    color: var(--dim-star);
+    text-transform: uppercase;
+}
+.tick-rates span b { color: var(--alien-green); font-weight: 400; }
+
+/* ── Inputs ───────────────────────────────────────────────────── */
+.input-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(232px, 1fr));
+    gap: 18px;
+    background: var(--panel);
+    border: 1px solid var(--panel-line);
+    border-radius: 4px;
+    padding: 28px 24px;
+}
+.field { display: flex; flex-direction: column; gap: 8px; }
+.field label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--nebula-fog);
+}
+.field .hint { font-size: 0.74rem; color: var(--dim-star); letter-spacing: 0; text-transform: none; font-family: var(--font-body); }
+.field input {
+    background: rgba(3, 3, 8, 0.85);
+    border: 1px solid rgba(0, 245, 255, 0.22);
+    border-radius: 3px;
+    color: var(--plasma-cyan);
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    padding: 11px 13px;
+    width: 100%;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.field input:focus {
+    outline: none;
+    border-color: var(--plasma-cyan);
+    box-shadow: 0 0 0 3px rgba(0, 245, 255, 0.12);
+}
+.field input::-webkit-calendar-picker-indicator { filter: invert(1) hue-rotate(140deg); cursor: pointer; }
+
+.presets {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    padding-top: 6px;
+}
+.presets .plabel {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--dim-star);
+    margin-right: 4px;
+}
+button.chip {
+    background: transparent;
+    border: 1px solid rgba(0, 245, 255, 0.3);
+    color: var(--plasma-cyan);
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 9px 15px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s, color 0.2s;
+}
+button.chip:hover {
+    background: rgba(0, 245, 255, 0.1);
+    box-shadow: 0 0 18px var(--plasma-cyan-dim);
+}
+button.chip.warn { border-color: rgba(255, 106, 0, 0.4); color: var(--energy-orange); }
+button.chip.warn:hover { background: rgba(255, 106, 0, 0.1); box-shadow: 0 0 18px rgba(255, 106, 0, 0.25); }
+
+.formula-strip {
+    margin-top: 18px;
+    padding: 16px 20px;
+    border-left: 2px solid var(--plasma-cyan);
+    background: rgba(0, 245, 255, 0.045);
+    font-family: var(--font-mono);
+    font-size: 0.86rem;
+    color: var(--nebula-fog);
+    letter-spacing: 0.04em;
+    overflow-x: auto;
+}
+.formula-strip b { color: var(--plasma-cyan); font-weight: 400; }
+
+/* ── Chart ────────────────────────────────────────────────────── */
+.chart-panel {
+    background: var(--panel);
+    border: 1px solid var(--panel-line);
+    border-radius: 4px;
+    padding: 26px 22px 20px;
+}
+.chart-wrap { position: relative; width: 100%; }
+canvas#growthChart { width: 100%; height: 340px; display: block; }
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    margin-top: 14px;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--dim-star);
+}
+.legend i { display: inline-block; width: 18px; height: 2px; margin-right: 8px; vertical-align: middle; }
+
+/* ── Table ────────────────────────────────────────────────────── */
+.table-scroll {
+    overflow-x: auto;
+    background: var(--panel);
+    border: 1px solid var(--panel-line);
+    border-radius: 4px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    min-width: 720px;
+}
+thead th {
+    text-align: right;
+    padding: 15px 18px;
+    font-size: 0.66rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--plasma-cyan);
+    border-bottom: 1px solid var(--panel-line);
+    white-space: nowrap;
+    font-weight: 400;
+}
+thead th:first-child { text-align: left; }
+tbody td {
+    text-align: right;
+    padding: 13px 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.045);
+    color: var(--nebula-fog);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+tbody td:first-child { text-align: left; color: var(--starlight); }
+tbody tr:hover td { background: rgba(0, 245, 255, 0.04); }
+tbody tr.now-row td { background: rgba(0, 255, 136, 0.07); color: var(--alien-green); }
+tbody tr.now-row td:first-child { color: var(--alien-green); }
+tbody tr.retire-row td {
+    background: rgba(255, 215, 0, 0.08);
+    color: var(--stellar-gold);
+    border-bottom: none;
+}
+tbody tr.retire-row td:first-child { color: var(--stellar-gold); }
+.tag {
+    font-size: 0.6rem;
+    letter-spacing: 0.16em;
+    padding: 2px 7px;
+    border: 1px solid currentColor;
+    border-radius: 2px;
+    margin-left: 9px;
+    opacity: 0.85;
+}
+
+/* ── Notes ────────────────────────────────────────────────────── */
+.notes {
+    background: rgba(255, 106, 0, 0.05);
+    border: 1px solid rgba(255, 106, 0, 0.25);
+    border-left-width: 2px;
+    border-radius: 4px;
+    padding: 24px 26px;
+}
+.notes h3 {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--energy-orange);
+    margin-bottom: 14px;
+    font-weight: 400;
+}
+.notes ul { list-style: none; display: grid; gap: 11px; }
+.notes li {
+    padding-left: 20px;
+    position: relative;
+    color: var(--nebula-fog);
+    font-size: 0.92rem;
+}
+.notes li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--energy-orange);
+}
+
+footer.console-foot {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--panel-line);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--dim-star);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px;
+}
+footer.console-foot a { color: var(--plasma-cyan); text-decoration: none; }
+footer.console-foot a:hover { text-shadow: 0 0 12px var(--plasma-cyan-dim); }
+
+@media (max-width: 600px) {
+    .wrap { padding: 0 16px 70px; }
+    header.console-head { padding: 32px 0 24px; }
+    .countdown-panel { padding: 28px 18px 24px; }
+    .clock { grid-template-columns: repeat(2, 1fr); }
+    .input-grid { padding: 22px 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .status-dot { animation: none; }
+    .progress-fill { transition: none; }
+}
+</style>
+</head>
+<body>
+<div id="starfield"></div>
+<div class="scan-lines"></div>
+
+<div class="wrap">
+
+<header class="console-head">
+    <div class="eyebrow"><span class="line"></span><span>Retirement Trajectory Console</span></div>
+    <h1>PENSION <span class="accent">COUNTDOWN</span></h1>
+    <p class="subhead">
+        Live projection of an OMERS-style defined-benefit pension. Your earned benefit is recalculated
+        every second from credited service and a five-year average that escalates with your assumed
+        raise rate — so the number on screen is always current to this instant.
+    </p>
+    <div class="status-row">
+        <span><span class="status-dot"></span>Console live</span>
+        <span>Local time <b id="localClock">—</b></span>
+        <span>Anchor <b id="anchorEcho">—</b></span>
+    </div>
+</header>
+
+<!-- ══ COUNTDOWN ══ -->
+<section>
+    <div class="sec-title"><span class="num">01</span><span>Time to retirement</span></div>
+    <div class="countdown-panel">
+        <div class="clock">
+            <div class="unit"><span class="val" id="cdYears">—</span><span class="lbl">Years</span></div>
+            <div class="unit"><span class="val" id="cdDays">—</span><span class="lbl">Days</span></div>
+            <div class="unit"><span class="val" id="cdHours">—</span><span class="lbl">Hours</span></div>
+            <div class="unit"><span class="val" id="cdMins">—</span><span class="lbl">Minutes</span></div>
+            <div class="unit"><span class="val" id="cdSecs">—</span><span class="lbl">Seconds</span></div>
+        </div>
+        <p class="retire-line" id="retireLine">—</p>
+        <div class="progress-shell"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-meta">
+            <span id="progLeft">—</span>
+            <span id="progRight">—</span>
+        </div>
+    </div>
+</section>
+
+<!-- ══ LIVE VALUE ══ -->
+<section>
+    <div class="sec-title"><span class="num">02</span><span>Benefit earned to this second</span></div>
+    <div class="cards">
+        <div class="card hero-card">
+            <span class="k">Annual pension earned so far</span>
+            <span class="v" id="liveAnnual">—</span>
+            <p class="sub" id="liveAnnualSub">—</p>
+            <div class="tick-rates">
+                <span>Per day <b id="ratePerDay">—</b></span>
+                <span>Per hour <b id="ratePerHour">—</b></span>
+                <span>Per minute <b id="ratePerMin">—</b></span>
+            </div>
+        </div>
+
+        <div class="card">
+            <span class="k">Monthly, if you stopped today</span>
+            <span class="v" id="liveMonthly">—</span>
+            <p class="sub" id="liveBiweekly">—</p>
+        </div>
+
+        <div class="card">
+            <span class="k">Credited service now</span>
+            <span class="v cyan" id="liveService">—</span>
+            <p class="sub" id="liveServiceSub">—</p>
+        </div>
+
+        <div class="card">
+            <span class="k">Best-five average now</span>
+            <span class="v cyan" id="liveBest5">—</span>
+            <p class="sub" id="liveBest5Sub">—</p>
+        </div>
+
+        <div class="card">
+            <span class="k">Annual pension at retirement</span>
+            <span class="v gold" id="finalAnnual">—</span>
+            <p class="sub" id="finalAnnualSub">—</p>
+        </div>
+
+        <div class="card">
+            <span class="k">Monthly at retirement</span>
+            <span class="v gold" id="finalMonthly">—</span>
+            <p class="sub" id="finalMonthlySub">—</p>
+        </div>
+
+        <div class="card">
+            <span class="k">Still to be earned</span>
+            <span class="v" id="remainingAnnual">—</span>
+            <p class="sub" id="remainingSub">—</p>
+        </div>
+    </div>
+</section>
+
+<!-- ══ INPUTS ══ -->
+<section>
+    <div class="sec-title"><span class="num">03</span><span>Assumptions — edit anything</span></div>
+    <div class="input-grid">
+        <div class="field">
+            <label for="inAnchorDate">Anchor date</label>
+            <input type="date" id="inAnchorDate" value="2026-01-01">
+            <span class="hint">The date your known figures were true.</span>
+        </div>
+        <div class="field">
+            <label for="inService">Service at anchor (years)</label>
+            <input type="number" id="inService" value="24.3" step="0.1" min="0" max="45">
+            <span class="hint">Credited service on the anchor date.</span>
+        </div>
+        <div class="field">
+            <label for="inBest5">Best-five average at anchor ($)</label>
+            <input type="number" id="inBest5" value="140000" step="1000" min="0">
+            <span class="hint">Highest five-year average earnings.</span>
+        </div>
+        <div class="field">
+            <label for="inGrowth">Earnings growth (% / year)</label>
+            <input type="number" id="inGrowth" value="4" step="0.1" min="0" max="25">
+            <span class="hint">Compounds into the best-five average.</span>
+        </div>
+        <div class="field">
+            <label for="inAccrual">Accrual rate (% / year of service)</label>
+            <input type="number" id="inAccrual" value="2" step="0.05" min="0" max="5">
+            <span class="hint">The 2% multiplier in the formula.</span>
+        </div>
+        <div class="field">
+            <label for="inCap">Max credited service (years)</label>
+            <input type="number" id="inCap" value="35" step="1" min="1" max="45">
+            <span class="hint">OMERS stops crediting service at 35.</span>
+        </div>
+        <div class="field">
+            <label for="inRetireDate">Retirement date</label>
+            <input type="date" id="inRetireDate">
+            <span class="hint">Defaults to your 30-year service milestone.</span>
+        </div>
+
+        <div class="presets">
+            <span class="plabel">Jump to</span>
+            <button class="chip" type="button" data-service="30">30 years of service</button>
+            <button class="chip" type="button" data-service="32">32 years</button>
+            <button class="chip" type="button" data-service="35">35 years (cap)</button>
+            <button class="chip warn" type="button" id="resetBtn">Reset to defaults</button>
+        </div>
+    </div>
+
+    <div class="formula-strip">
+        Annual pension = <b id="fAccrual">2%</b> × <b id="fBest5">$140,000</b> (best five, grown
+        <b id="fGrowth">4%</b>/yr) × <b id="fService">24.3</b> years of service
+        &nbsp;→&nbsp; <b id="fResult">—</b> per year, right now
+    </div>
+</section>
+
+<!-- ══ CHART ══ -->
+<section>
+    <div class="sec-title"><span class="num">04</span><span>Growth curve</span></div>
+    <div class="chart-panel">
+        <div class="chart-wrap"><canvas id="growthChart"></canvas></div>
+        <div class="legend">
+            <span><i style="background:#00f5ff"></i>Annual pension</span>
+            <span><i style="background:#00ff88"></i>Today</span>
+            <span><i style="background:#ffd700"></i>Retirement</span>
+        </div>
+    </div>
+</section>
+
+<!-- ══ TABLE ══ -->
+<section>
+    <div class="sec-title"><span class="num">05</span><span>Year-by-year projection</span></div>
+    <div class="table-scroll">
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Service (yrs)</th>
+                    <th>Best-five average</th>
+                    <th>Annual pension</th>
+                    <th>Monthly</th>
+                    <th>Gain vs. prior</th>
+                </tr>
+            </thead>
+            <tbody id="projBody"></tbody>
+        </table>
+    </div>
+</section>
+
+<!-- ══ NOTES ══ -->
+<section>
+    <div class="sec-title"><span class="num">06</span><span>Read this before you trust the number</span></div>
+    <div class="notes">
+        <h3>Assumptions and limits</h3>
+        <ul>
+            <li><strong>This uses the flat 2% formula you specified.</strong> OMERS' actual lifetime
+                pension is integrated with CPP — roughly 1.325% on earnings up to the average YMPE plus
+                2% on earnings above it — which produces a <em>lower</em> lifetime figure than a flat 2%.
+                Treat this console as a planning ballpark, not as an OMERS statement.</li>
+            <li><strong>Service accrues continuously</strong> at one year per calendar year from the
+                anchor date, capped at the max-credited-service value above.</li>
+            <li><strong>The best-five average compounds smoothly</strong> at your growth rate rather than
+                stepping once a year, so the live figure moves every second instead of jumping each January.</li>
+            <li><strong>Nothing here is indexed, reduced, or taxed.</strong> No early-retirement reduction,
+                no bridge benefit, no post-retirement inflation indexing, no survivor-option cost, and no
+                income tax are applied.</li>
+            <li><strong>Your inputs are saved in this browser only</strong> (localStorage). Nothing is
+                transmitted anywhere.</li>
+        </ul>
+    </div>
+</section>
+
+<footer class="console-foot">
+    <span>Cosmic Frontier · Retirement Trajectory Console</span>
+    <span><a href="index.html">← Return to main site</a></span>
+</footer>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   PENSION COUNTDOWN — logic
+   ═══════════════════════════════════════════════════════════════ */
+
+const MS_DAY  = 86400000;
+const DAYS_YR = 365.2425;
+const MS_YEAR = DAYS_YR * MS_DAY;
+
+const DEFAULTS = {
+    anchorDate: '2026-01-01',
+    service:    24.3,
+    best5:      140000,
+    growth:     4,
+    accrual:    2,
+    cap:        35,
+    retireDate: null      // derived: the 30-year service milestone
+};
+
+const STORE_KEY = 'cf-pension-console-v1';
+
+const el = id => document.getElementById(id);
+
+const inputs = {
+    anchorDate: el('inAnchorDate'),
+    service:    el('inService'),
+    best5:      el('inBest5'),
+    growth:     el('inGrowth'),
+    accrual:    el('inAccrual'),
+    cap:        el('inCap'),
+    retireDate: el('inRetireDate')
+};
+
+/* ── Formatting ───────────────────────────────────────────────── */
+const nf0 = new Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+const nf2 = new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const money0 = n => '$' + nf0.format(Math.round(n));
+const money2 = n => '$' + nf2.format(n);
+const pct = n => n.toFixed(n % 1 === 0 ? 0 : 2) + '%';
+
+const DATE_FMT = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+const SHORT_FMT = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
+
+/* Parse a yyyy-mm-dd input as LOCAL midnight (not UTC, which would shift the day). */
+function parseDate(str) {
+    if (!str) return null;
+    const [y, m, d] = str.split('-').map(Number);
+    if (!y || !m || !d) return null;
+    return new Date(y, m - 1, d, 0, 0, 0, 0);
+}
+function toInputValue(date) {
+    const p = n => String(n).padStart(2, '0');
+    return `${date.getFullYear()}-${p(date.getMonth() + 1)}-${p(date.getDate())}`;
+}
+
+/* ── Model ────────────────────────────────────────────────────── */
+function readConfig() {
+    const anchor = parseDate(inputs.anchorDate.value) || parseDate(DEFAULTS.anchorDate);
+    const num = (input, fallback) => {
+        const v = parseFloat(input.value);
+        return Number.isFinite(v) ? v : fallback;
+    };
+    return {
+        anchor,
+        service: Math.max(0, num(inputs.service, DEFAULTS.service)),
+        best5:   Math.max(0, num(inputs.best5,   DEFAULTS.best5)),
+        growth:  Math.max(0, num(inputs.growth,  DEFAULTS.growth)) / 100,
+        accrual: Math.max(0, num(inputs.accrual, DEFAULTS.accrual)) / 100,
+        cap:     Math.max(0.01, num(inputs.cap,  DEFAULTS.cap)),
+        retire:  parseDate(inputs.retireDate.value)
+    };
+}
+
+/* State of the pension at an arbitrary instant. */
+function projectAt(cfg, when) {
+    const elapsedYears = (when - cfg.anchor) / MS_YEAR;
+    const rawService = cfg.service + elapsedYears;
+    const service = Math.min(Math.max(rawService, 0), cfg.cap);
+    const best5 = cfg.best5 * Math.pow(1 + cfg.growth, elapsedYears);
+    const annual = cfg.accrual * best5 * service;
+    return { elapsedYears, rawService, service, best5, annual, capped: rawService > cfg.cap };
+}
+
+/* Date on which credited service reaches `target` years. */
+function dateAtService(cfg, target) {
+    const years = target - cfg.service;
+    return new Date(cfg.anchor.getTime() + years * MS_YEAR);
+}
+
+/* ── Countdown breakdown ──────────────────────────────────────── */
+function breakdown(msLeft) {
+    let ms = Math.max(0, msLeft);
+    const years = Math.floor(ms / MS_YEAR);
+    ms -= years * MS_YEAR;
+    const days = Math.floor(ms / MS_DAY);
+    ms -= days * MS_DAY;
+    const hours = Math.floor(ms / 3600000);
+    ms -= hours * 3600000;
+    const minutes = Math.floor(ms / 60000);
+    ms -= minutes * 60000;
+    const seconds = Math.floor(ms / 1000);
+    return { years, days, hours, minutes, seconds };
+}
+
+/* ── Persistence ──────────────────────────────────────────────── */
+function save() {
+    const data = {};
+    for (const [key, input] of Object.entries(inputs)) data[key] = input.value;
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch (e) { /* private mode */ }
+}
+function load() {
+    let data = null;
+    try { data = JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); } catch (e) { /* ignore */ }
+    if (!data) return false;
+    let any = false;
+    for (const [key, input] of Object.entries(inputs)) {
+        if (typeof data[key] === 'string' && data[key] !== '') { input.value = data[key]; any = true; }
+    }
+    return any;
+}
+function applyDefaults() {
+    inputs.anchorDate.value = DEFAULTS.anchorDate;
+    inputs.service.value    = DEFAULTS.service;
+    inputs.best5.value      = DEFAULTS.best5;
+    inputs.growth.value     = DEFAULTS.growth;
+    inputs.accrual.value    = DEFAULTS.accrual;
+    inputs.cap.value        = DEFAULTS.cap;
+    inputs.retireDate.value = toInputValue(dateAtService(readConfig(), 30));
+}
+
+/* ── Render: everything that ticks ────────────────────────────── */
+let cfg = null;
+let chartPoints = null;
+
+function renderLive() {
+    const now = new Date();
+    const nowState = projectAt(cfg, now);
+    const retire = cfg.retire;
+
+    el('localClock').textContent = now.toLocaleTimeString('en-US');
+
+    /* Countdown */
+    const msLeft = retire - now;
+    const b = breakdown(msLeft);
+    const reached = msLeft <= 0;
+
+    el('cdYears').textContent = reached ? '0' : b.years;
+    el('cdDays').textContent  = reached ? '0'  : String(b.days).padStart(2, '0');
+    el('cdHours').textContent = reached ? '00' : String(b.hours).padStart(2, '0');
+    el('cdMins').textContent  = reached ? '00' : String(b.minutes).padStart(2, '0');
+    el('cdSecs').textContent  = reached ? '00' : String(b.seconds).padStart(2, '0');
+
+    const retireState = projectAt(cfg, retire);
+
+    el('retireLine').innerHTML = reached
+        ? `Retirement date reached — <strong>${DATE_FMT.format(retire)}</strong> · final pension <strong>${money0(retireState.annual)}</strong>/yr`
+        : `Target: <strong>${DATE_FMT.format(retire)}</strong> · ${retireState.service.toFixed(2)} years of service · <strong>${money0(retireState.annual)}</strong>/yr`;
+
+    /* Progress from anchor → retirement */
+    const span = retire - cfg.anchor;
+    const done = span > 0 ? Math.min(1, Math.max(0, (now - cfg.anchor) / span)) : 1;
+    el('progressFill').style.width = (done * 100).toFixed(2) + '%';
+    el('progLeft').textContent = `${(done * 100).toFixed(1)}% of the run complete`;
+    el('progRight').textContent = reached
+        ? 'Countdown complete'
+        : `${nf0.format(Math.ceil(msLeft / MS_DAY))} days remaining`;
+
+    /* Live benefit */
+    el('liveAnnual').textContent = money2(nowState.annual);
+    el('liveAnnualSub').innerHTML = nowState.capped
+        ? `<em>Service capped at ${cfg.cap} years — growth now comes from earnings only.</em>`
+        : `<em>Vested value of ${nowState.service.toFixed(4)} years of service at today's best-five average.</em>`;
+
+    el('liveMonthly').textContent = money2(nowState.annual / 12);
+    el('liveBiweekly').innerHTML = `<em>${money2(nowState.annual / 26)} bi-weekly · ${money2(nowState.annual / 52)} weekly</em>`;
+
+    el('liveService').textContent = nowState.service.toFixed(4);
+    const nextWhole = Math.min(Math.ceil(nowState.rawService + 1e-9), cfg.cap);
+    el('liveServiceSub').innerHTML = nowState.rawService >= cfg.cap
+        ? `<em>Maximum credited service reached.</em>`
+        : `<em>Hits ${nextWhole} years on ${SHORT_FMT.format(dateAtService(cfg, nextWhole))}.</em>`;
+
+    el('liveBest5').textContent = money0(nowState.best5);
+    el('liveBest5Sub').innerHTML = `<em>Grown from ${money0(cfg.best5)} at ${pct(cfg.growth * 100)}/yr since ${SHORT_FMT.format(cfg.anchor)}.</em>`;
+
+    /* Growth rates — measured, so the service cap is respected automatically */
+    const perDay = projectAt(cfg, new Date(now.getTime() + MS_DAY)).annual - nowState.annual;
+    el('ratePerDay').textContent  = money2(perDay);
+    el('ratePerHour').textContent = money2(perDay / 24);
+    el('ratePerMin').textContent  = money2(perDay / 1440);
+
+    /* Retirement figures */
+    el('finalAnnual').textContent = money0(retireState.annual);
+    el('finalAnnualSub').innerHTML = `<em>${retireState.service.toFixed(2)} yrs of service × ${money0(retireState.best5)} best-five × ${pct(cfg.accrual * 100)}.</em>`;
+    el('finalMonthly').textContent = money0(retireState.annual / 12);
+    el('finalMonthlySub').innerHTML = `<em>${money0(retireState.annual / 26)} bi-weekly, before tax.</em>`;
+
+    const remaining = Math.max(0, retireState.annual - nowState.annual);
+    el('remainingAnnual').textContent = money0(remaining);
+    el('remainingSub').innerHTML = reached
+        ? `<em>Fully earned.</em>`
+        : `<em>${((remaining / retireState.annual) * 100).toFixed(1)}% of the final pension is still ahead of you.</em>`;
+
+    /* Formula strip */
+    el('fAccrual').textContent = pct(cfg.accrual * 100);
+    el('fBest5').textContent   = money0(nowState.best5);
+    el('fGrowth').textContent  = pct(cfg.growth * 100);
+    el('fService').textContent = nowState.service.toFixed(3);
+    el('fResult').textContent  = money2(nowState.annual);
+
+    /* Chart marker for "today" rides along with the clock */
+    if (chartPoints) drawChart(nowState, retireState);
+}
+
+/* ── Projection table ─────────────────────────────────────────── */
+function renderTable() {
+    const body = el('projBody');
+    const now = new Date();
+    const retire = cfg.retire;
+
+    /* One row per Jan 1 from the anchor year forward, plus today and retirement. */
+    const rows = [];
+    const push = (date, label) => {
+        if (date < cfg.anchor && label !== 'anchor') return;
+        rows.push({ date, label });
+    };
+
+    push(cfg.anchor, 'anchor');
+    const firstYear = cfg.anchor.getFullYear() + 1;
+    const lastYear = retire.getFullYear();
+    for (let y = firstYear; y <= lastYear; y++) {
+        const d = new Date(y, 0, 1);
+        if (d < retire) push(d, '');
+    }
+    push(now, 'now');
+    push(retire, 'retire');
+
+    rows.sort((a, b) => a.date - b.date);
+
+    let prevAnnual = null;
+    body.innerHTML = '';
+
+    for (const row of rows) {
+        const s = projectAt(cfg, row.date);
+        const tr = document.createElement('tr');
+        if (row.label === 'now') tr.className = 'now-row';
+        if (row.label === 'retire') tr.className = 'retire-row';
+
+        const tag = row.label === 'now' ? '<span class="tag">TODAY</span>'
+                  : row.label === 'retire' ? '<span class="tag">RETIRE</span>'
+                  : row.label === 'anchor' ? '<span class="tag">ANCHOR</span>'
+                  : '';
+
+        const gain = prevAnnual === null ? '—' : '+' + money0(s.annual - prevAnnual);
+
+        tr.innerHTML =
+            `<td>${SHORT_FMT.format(row.date)}${tag}</td>` +
+            `<td>${s.service.toFixed(2)}</td>` +
+            `<td>${money0(s.best5)}</td>` +
+            `<td>${money0(s.annual)}</td>` +
+            `<td>${money0(s.annual / 12)}</td>` +
+            `<td>${gain}</td>`;
+
+        body.appendChild(tr);
+        prevAnnual = s.annual;
+    }
+}
+
+/* ── Chart ────────────────────────────────────────────────────── */
+const canvas = el('growthChart');
+const ctx = canvas.getContext('2d');
+
+function buildChartPoints() {
+    const start = cfg.anchor.getTime();
+    const end = cfg.retire.getTime();
+    const span = Math.max(end - start, MS_DAY);
+    const N = 160;
+    const pts = [];
+    for (let i = 0; i <= N; i++) {
+        const t = start + (span * i) / N;
+        pts.push({ t, annual: projectAt(cfg, new Date(t)).annual });
+    }
+    chartPoints = { pts, start, end, span };
+}
+
+function drawChart(nowState, retireState) {
+    const dpr = window.devicePixelRatio || 1;
+    const cssW = canvas.clientWidth || 800;
+    const cssH = 340;
+    if (canvas.width !== Math.round(cssW * dpr) || canvas.height !== Math.round(cssH * dpr)) {
+        canvas.width = Math.round(cssW * dpr);
+        canvas.height = Math.round(cssH * dpr);
+    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, cssW, cssH);
+
+    const padL = 74, padR = 18, padT = 18, padB = 40;
+    const plotW = cssW - padL - padR;
+    const plotH = cssH - padT - padB;
+    if (plotW <= 10 || plotH <= 10) return;
+
+    const { pts, start, span } = chartPoints;
+    const maxY = Math.max(...pts.map(p => p.annual)) * 1.06 || 1;
+    const minY = 0;
+
+    const X = t => padL + ((t - start) / span) * plotW;
+    const Y = v => padT + plotH - ((v - minY) / (maxY - minY)) * plotH;
+
+    /* Grid + Y labels */
+    ctx.font = '11px "Share Tech Mono", monospace';
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'right';
+    const steps = 5;
+    for (let i = 0; i <= steps; i++) {
+        const v = minY + ((maxY - minY) * i) / steps;
+        const y = Y(v);
+        ctx.strokeStyle = 'rgba(255,255,255,0.055)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(padL, y);
+        ctx.lineTo(cssW - padR, y);
+        ctx.stroke();
+        ctx.fillStyle = '#606080';
+        ctx.fillText('$' + nf0.format(Math.round(v / 1000)) + 'k', padL - 10, y);
+    }
+
+    /* X labels — one per year where it fits */
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    const y0 = new Date(start).getFullYear();
+    const y1 = new Date(chartPoints.end).getFullYear();
+    const stride = Math.ceil((y1 - y0 + 1) / Math.max(2, Math.floor(plotW / 62)));
+    for (let y = y0; y <= y1; y += stride) {
+        const t = new Date(y, 0, 1).getTime();
+        if (t < start || t > chartPoints.end) continue;
+        const x = X(t);
+        ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+        ctx.beginPath();
+        ctx.moveTo(x, padT);
+        ctx.lineTo(x, padT + plotH);
+        ctx.stroke();
+        ctx.fillStyle = '#606080';
+        ctx.fillText(String(y), x, padT + plotH + 10);
+    }
+
+    /* Area under the curve */
+    const grad = ctx.createLinearGradient(0, padT, 0, padT + plotH);
+    grad.addColorStop(0, 'rgba(0,245,255,0.26)');
+    grad.addColorStop(1, 'rgba(0,245,255,0)');
+    ctx.beginPath();
+    ctx.moveTo(X(pts[0].t), Y(pts[0].annual));
+    for (const p of pts) ctx.lineTo(X(p.t), Y(p.annual));
+    ctx.lineTo(X(pts[pts.length - 1].t), padT + plotH);
+    ctx.lineTo(X(pts[0].t), padT + plotH);
+    ctx.closePath();
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    /* Curve */
+    ctx.beginPath();
+    ctx.moveTo(X(pts[0].t), Y(pts[0].annual));
+    for (const p of pts) ctx.lineTo(X(p.t), Y(p.annual));
+    ctx.strokeStyle = '#00f5ff';
+    ctx.lineWidth = 2;
+    ctx.shadowColor = 'rgba(0,245,255,0.55)';
+    ctx.shadowBlur = 10;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    /* Marker helper */
+    const marker = (t, v, color, label, alignRight) => {
+        if (t < start || t > chartPoints.end) return;
+        const x = X(t), y = Y(v);
+        ctx.setLineDash([4, 4]);
+        ctx.strokeStyle = color + '66';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(x, padT);
+        ctx.lineTo(x, padT + plotH);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.beginPath();
+        ctx.arc(x, y, 4.5, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.shadowColor = color;
+        ctx.shadowBlur = 12;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        ctx.fillStyle = color;
+        ctx.font = '11px "Share Tech Mono", monospace';
+        ctx.textBaseline = 'bottom';
+        const nearRight = x > cssW - padR - 70;
+        ctx.textAlign = (alignRight && !nearRight) ? 'left' : 'right';
+        const dx = ctx.textAlign === 'left' ? 9 : -9;
+        ctx.fillText(label, x + dx, y - 9);
+    };
+
+    const nowT = Date.now();
+    marker(nowT, nowState.annual, '#00ff88', 'NOW ' + money0(nowState.annual), true);
+    marker(chartPoints.end, retireState.annual, '#ffd700', money0(retireState.annual), false);
+}
+
+/* ── Wiring ───────────────────────────────────────────────────── */
+function rebuild() {
+    cfg = readConfig();
+
+    /* Guard: retirement must be a valid date after the anchor. */
+    if (!cfg.retire || isNaN(cfg.retire) || cfg.retire <= cfg.anchor) {
+        const fallback = dateAtService(cfg, Math.max(30, cfg.service + 1));
+        inputs.retireDate.value = toInputValue(fallback);
+        cfg.retire = fallback;
+    }
+
+    el('anchorEcho').textContent = SHORT_FMT.format(cfg.anchor);
+    buildChartPoints();
+    renderTable();
+    renderLive();
+    save();
+}
+
+for (const input of Object.values(inputs)) {
+    input.addEventListener('input', rebuild);
+    input.addEventListener('change', rebuild);
+}
+
+document.querySelectorAll('.chip[data-service]').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const target = parseFloat(btn.dataset.service);
+        const current = readConfig();
+        inputs.retireDate.value = toInputValue(dateAtService(current, target));
+        if (target > current.cap) inputs.cap.value = target;
+        rebuild();
+    });
+});
+
+el('resetBtn').addEventListener('click', () => {
+    try { localStorage.removeItem(STORE_KEY); } catch (e) { /* ignore */ }
+    applyDefaults();
+    rebuild();
+});
+
+let resizeTimer = null;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(rebuild, 120);
+});
+
+/* Boot */
+(function init() {
+    const restored = load();
+    if (!restored || !inputs.retireDate.value) {
+        if (!restored) applyDefaults();
+        else inputs.retireDate.value = toInputValue(dateAtService(readConfig(), 30));
+    }
+    rebuild();
+    setInterval(renderLive, 1000);
+})();
+</script>
+</body>
+</html>
