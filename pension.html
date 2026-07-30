@@ -475,6 +475,27 @@ tbody tr.retire-row td:first-child { color: var(--stellar-gold); }
     opacity: 0.85;
 }
 
+tbody tr.clickable { cursor: pointer; }
+tbody tr.clickable:focus-visible {
+    outline: 1px solid var(--plasma-cyan);
+    outline-offset: -1px;
+}
+.ms-note {
+    display: block;
+    margin-top: 3px;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dim-star);
+}
+.milestone-note {
+    margin-top: 14px;
+    font-size: 0.88rem;
+    color: var(--nebula-fog);
+    max-width: 90ch;
+}
+.milestone-note strong { color: var(--stellar-gold); font-weight: 600; }
+
 /* ── Notes ────────────────────────────────────────────────────── */
 .notes {
     background: rgba(255, 106, 0, 0.05);
@@ -600,6 +621,12 @@ footer.console-foot a:hover { text-shadow: 0 0 12px var(--plasma-cyan-dim); }
         </div>
 
         <div class="card">
+            <span class="k">Your age now</span>
+            <span class="v cyan" id="liveAge">—</span>
+            <p class="sub" id="liveAgeSub">—</p>
+        </div>
+
+        <div class="card">
             <span class="k">Credited service now</span>
             <span class="v cyan" id="liveService">—</span>
             <p class="sub" id="liveServiceSub">—</p>
@@ -641,6 +668,11 @@ footer.console-foot a:hover { text-shadow: 0 0 12px var(--plasma-cyan-dim); }
             <span class="hint">The date your known figures were true.</span>
         </div>
         <div class="field">
+            <label for="inBirthDate">Date of birth</label>
+            <input type="date" id="inBirthDate" value="1972-08-15">
+            <span class="hint">Day defaults to mid-August — set your exact date.</span>
+        </div>
+        <div class="field">
             <label for="inService">Service at anchor (years)</label>
             <input type="number" id="inService" value="24.3" step="0.1" min="0" max="45">
             <span class="hint">Credited service on the anchor date.</span>
@@ -673,9 +705,12 @@ footer.console-foot a:hover { text-shadow: 0 0 12px var(--plasma-cyan-dim); }
 
         <div class="presets">
             <span class="plabel">Jump to</span>
-            <button class="chip" type="button" data-service="30">30 years of service</button>
-            <button class="chip" type="button" data-service="32">32 years</button>
-            <button class="chip" type="button" data-service="35">35 years (cap)</button>
+            <button class="chip" type="button" data-service="30">30 yrs service</button>
+            <button class="chip" type="button" data-factor="85">85 factor</button>
+            <button class="chip" type="button" data-factor="90">90 factor</button>
+            <button class="chip" type="button" data-age="60">Age 60</button>
+            <button class="chip" type="button" data-age="65">Age 65</button>
+            <button class="chip" type="button" data-service="35">35 yrs (cap)</button>
             <button class="chip warn" type="button" id="resetBtn">Reset to defaults</button>
         </div>
     </div>
@@ -687,9 +722,31 @@ footer.console-foot a:hover { text-shadow: 0 0 12px var(--plasma-cyan-dim); }
     </div>
 </section>
 
+<!-- ══ MILESTONES ══ -->
+<section>
+    <div class="sec-title"><span class="num">04</span><span>Retirement milestones — click one to retarget</span></div>
+    <div class="table-scroll">
+        <table>
+            <thead>
+                <tr>
+                    <th>Milestone</th>
+                    <th>Date</th>
+                    <th>Age</th>
+                    <th>Service</th>
+                    <th>Factor</th>
+                    <th>Annual pension</th>
+                    <th>Monthly</th>
+                </tr>
+            </thead>
+            <tbody id="msBody"></tbody>
+        </table>
+    </div>
+    <p class="milestone-note" id="milestoneNote">—</p>
+</section>
+
 <!-- ══ CHART ══ -->
 <section>
-    <div class="sec-title"><span class="num">04</span><span>Growth curve</span></div>
+    <div class="sec-title"><span class="num">05</span><span>Growth curve</span></div>
     <div class="chart-panel">
         <div class="chart-wrap"><canvas id="growthChart"></canvas></div>
         <div class="legend">
@@ -702,7 +759,7 @@ footer.console-foot a:hover { text-shadow: 0 0 12px var(--plasma-cyan-dim); }
 
 <!-- ══ TABLE ══ -->
 <section>
-    <div class="sec-title"><span class="num">05</span><span>Year-by-year projection</span></div>
+    <div class="sec-title"><span class="num">06</span><span>Year-by-year projection</span></div>
     <div class="table-scroll">
         <table>
             <thead>
@@ -722,7 +779,7 @@ footer.console-foot a:hover { text-shadow: 0 0 12px var(--plasma-cyan-dim); }
 
 <!-- ══ NOTES ══ -->
 <section>
-    <div class="sec-title"><span class="num">06</span><span>Read this before you trust the number</span></div>
+    <div class="sec-title"><span class="num">07</span><span>Read this before you trust the number</span></div>
     <div class="notes">
         <h3>Assumptions and limits</h3>
         <ul>
@@ -734,9 +791,14 @@ footer.console-foot a:hover { text-shadow: 0 0 12px var(--plasma-cyan-dim); }
                 anchor date, capped at the max-credited-service value above.</li>
             <li><strong>The best-five average compounds smoothly</strong> at your growth rate rather than
                 stepping once a year, so the live figure moves every second instead of jumping each January.</li>
+            <li><strong>Milestone dates assume you keep working continuously.</strong> Age and qualifying
+                service each climb a year per year, so the factor gains two points annually. Qualifying
+                service for the factor is not capped, even though credited service stops at 35.</li>
             <li><strong>Nothing here is indexed, reduced, or taxed.</strong> No early-retirement reduction,
                 no bridge benefit, no post-retirement inflation indexing, no survivor-option cost, and no
-                income tax are applied.</li>
+                income tax are applied. Your 30-year target should qualify for an unreduced pension, so
+                no reduction is the right assumption there — but it also means the bridge benefit payable
+                to 65 is missing from these figures.</li>
             <li><strong>Your inputs are saved in this browser only</strong> (localStorage). Nothing is
                 transmitted anywhere.</li>
         </ul>
@@ -761,20 +823,22 @@ const MS_YEAR = DAYS_YR * MS_DAY;
 
 const DEFAULTS = {
     anchorDate: '2026-01-01',
+    birthDate:  '1972-08-15',   // age 53 on the anchor date, August birthday
     service:    24.3,
     best5:      140000,
     growth:     4,
     accrual:    2,
     cap:        35,
-    retireDate: null      // derived: the 30-year service milestone
+    retireDate: null            // derived: the 30-year service milestone
 };
 
-const STORE_KEY = 'cf-pension-console-v1';
+const STORE_KEY = 'cf-pension-console-v2';
 
 const el = id => document.getElementById(id);
 
 const inputs = {
     anchorDate: el('inAnchorDate'),
+    birthDate:  el('inBirthDate'),
     service:    el('inService'),
     best5:      el('inBest5'),
     growth:     el('inGrowth'),
@@ -814,6 +878,7 @@ function readConfig() {
     };
     return {
         anchor,
+        birth:   parseDate(inputs.birthDate.value) || parseDate(DEFAULTS.birthDate),
         service: Math.max(0, num(inputs.service, DEFAULTS.service)),
         best5:   Math.max(0, num(inputs.best5,   DEFAULTS.best5)),
         growth:  Math.max(0, num(inputs.growth,  DEFAULTS.growth)) / 100,
@@ -830,13 +895,38 @@ function projectAt(cfg, when) {
     const service = Math.min(Math.max(rawService, 0), cfg.cap);
     const best5 = cfg.best5 * Math.pow(1 + cfg.growth, elapsedYears);
     const annual = cfg.accrual * best5 * service;
-    return { elapsedYears, rawService, service, best5, annual, capped: rawService > cfg.cap };
+    const age = (when - cfg.birth) / MS_YEAR;
+    /* Qualifying service drives the age+service factor and is not capped. */
+    const factor = age + Math.max(rawService, 0);
+    return { elapsedYears, rawService, service, best5, annual, age, factor, capped: rawService > cfg.cap };
 }
 
 /* Date on which credited service reaches `target` years. */
 function dateAtService(cfg, target) {
     const years = target - cfg.service;
     return new Date(cfg.anchor.getTime() + years * MS_YEAR);
+}
+
+/* Birthday on which the member turns `target`. */
+function dateAtAge(cfg, target) {
+    const d = new Date(cfg.birth.getTime());
+    d.setFullYear(d.getFullYear() + Math.round(target));
+    return d;
+}
+
+/* Date on which age + qualifying service reaches `target`.
+   Both climb at one year per year, so the factor gains two points a year. */
+function dateAtFactor(cfg, target) {
+    const factorAtAnchor = (cfg.anchor - cfg.birth) / MS_YEAR + cfg.service;
+    const years = (target - factorAtAnchor) / 2;
+    return new Date(cfg.anchor.getTime() + years * MS_YEAR);
+}
+
+/* Age formatted as "59 yrs 1 mo". */
+function ageLabel(years) {
+    const whole = Math.floor(years);
+    const months = Math.floor((years - whole) * 12);
+    return `${whole} yr${whole === 1 ? '' : 's'} ${months} mo`;
 }
 
 /* ── Countdown breakdown ──────────────────────────────────────── */
@@ -872,6 +962,7 @@ function load() {
 }
 function applyDefaults() {
     inputs.anchorDate.value = DEFAULTS.anchorDate;
+    inputs.birthDate.value  = DEFAULTS.birthDate;
     inputs.service.value    = DEFAULTS.service;
     inputs.best5.value      = DEFAULTS.best5;
     inputs.growth.value     = DEFAULTS.growth;
@@ -906,7 +997,9 @@ function renderLive() {
 
     el('retireLine').innerHTML = reached
         ? `Retirement date reached — <strong>${DATE_FMT.format(retire)}</strong> · final pension <strong>${money0(retireState.annual)}</strong>/yr`
-        : `Target: <strong>${DATE_FMT.format(retire)}</strong> · ${retireState.service.toFixed(2)} years of service · <strong>${money0(retireState.annual)}</strong>/yr`;
+        : `Target: <strong>${DATE_FMT.format(retire)}</strong> · age <strong>${Math.floor(retireState.age)}</strong> · ` +
+          `${retireState.service.toFixed(2)} yrs service · factor <strong>${retireState.factor.toFixed(1)}</strong> · ` +
+          `<strong>${money0(retireState.annual)}</strong>/yr`;
 
     /* Progress from anchor → retirement */
     const span = retire - cfg.anchor;
@@ -925,6 +1018,11 @@ function renderLive() {
 
     el('liveMonthly').textContent = money2(nowState.annual / 12);
     el('liveBiweekly').innerHTML = `<em>${money2(nowState.annual / 26)} bi-weekly · ${money2(nowState.annual / 52)} weekly</em>`;
+
+    el('liveAge').textContent = ageLabel(nowState.age);
+    el('liveAgeSub').innerHTML = reached
+        ? `<em>Factor ${nowState.factor.toFixed(1)}.</em>`
+        : `<em>Age ${Math.floor(retireState.age)} at retirement · factor ${nowState.factor.toFixed(1)} today, ${retireState.factor.toFixed(1)} at the target.</em>`;
 
     el('liveService').textContent = nowState.service.toFixed(4);
     const nextWhole = Math.min(Math.ceil(nowState.rawService + 1e-9), cfg.cap);
@@ -962,6 +1060,74 @@ function renderLive() {
 
     /* Chart marker for "today" rides along with the clock */
     if (chartPoints) drawChart(nowState, retireState);
+}
+
+/* ── Milestones ───────────────────────────────────────────────── */
+function milestoneList() {
+    return [
+        { name: '85 factor',           date: dateAtFactor(cfg, 85),  note: 'age + service = 85' },
+        { name: '90 factor',           date: dateAtFactor(cfg, 90),  note: 'age + service = 90' },
+        { name: '30 years of service', date: dateAtService(cfg, 30), note: 'your chosen target' },
+        { name: 'Age 60',              date: dateAtAge(cfg, 60),     note: '' },
+        { name: 'Age 65',              date: dateAtAge(cfg, 65),     note: 'normal retirement age' },
+        { name: '35 years of service', date: dateAtService(cfg, 35), note: 'credited service cap' }
+    ].sort((a, b) => a.date - b.date);
+}
+
+function renderMilestones() {
+    const body = el('msBody');
+    const target = cfg.retire.getTime();
+    body.innerHTML = '';
+
+    const list = milestoneList();
+    for (const ms of list) {
+        const s = projectAt(cfg, ms.date);
+        const isTarget = Math.abs(ms.date.getTime() - target) < MS_DAY;
+
+        const tr = document.createElement('tr');
+        tr.className = 'clickable' + (isTarget ? ' retire-row' : '');
+        tr.tabIndex = 0;
+        tr.title = 'Set this as the retirement target';
+
+        const tag = isTarget ? '<span class="tag">TARGET</span>' : '';
+        const note = ms.note ? `<span class="ms-note">${ms.note}</span>` : '';
+
+        tr.innerHTML =
+            `<td>${ms.name}${tag}${note}</td>` +
+            `<td>${SHORT_FMT.format(ms.date)}</td>` +
+            `<td>${ageLabel(s.age)}</td>` +
+            `<td>${s.service.toFixed(2)}</td>` +
+            `<td>${s.factor.toFixed(1)}</td>` +
+            `<td>${money0(s.annual)}</td>` +
+            `<td>${money0(s.annual / 12)}</td>`;
+
+        const pick = () => {
+            inputs.retireDate.value = toInputValue(ms.date);
+            rebuild();
+        };
+        tr.addEventListener('click', pick);
+        tr.addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); }
+        });
+
+        body.appendChild(tr);
+    }
+
+    /* Earliest unreduced route, resolved separately for each normal retirement age.
+       NRA 65 members qualify on 30 years of service or the 90 factor; NRA 60
+       members (police, fire, paramedics) on 30 years or the 85 factor. */
+    const thirty = { label: '30 years of service', date: dateAtService(cfg, 30) };
+    const nra65 = [thirty, { label: 'the 90 factor', date: dateAtFactor(cfg, 90) }]
+        .sort((a, b) => a.date - b.date)[0];
+    const nra60 = [thirty, { label: 'the 85 factor', date: dateAtFactor(cfg, 85) }]
+        .sort((a, b) => a.date - b.date)[0];
+
+    el('milestoneNote').innerHTML =
+        `Earliest unreduced pension depends on your normal retirement age. ` +
+        `<strong>NRA 65</strong> (most OMERS members): ${nra65.label}, ` +
+        `${SHORT_FMT.format(nra65.date)}. <strong>NRA 60</strong> (police, fire, paramedics): ` +
+        `${nra60.label}, ${SHORT_FMT.format(nra60.date)}. ` +
+        `Click any row above to retarget the countdown.`;
 }
 
 /* ── Projection table ─────────────────────────────────────────── */
@@ -1167,6 +1333,7 @@ function rebuild() {
 
     el('anchorEcho').textContent = SHORT_FMT.format(cfg.anchor);
     buildChartPoints();
+    renderMilestones();
     renderTable();
     renderLive();
     save();
@@ -1177,12 +1344,20 @@ for (const input of Object.values(inputs)) {
     input.addEventListener('change', rebuild);
 }
 
-document.querySelectorAll('.chip[data-service]').forEach(btn => {
+document.querySelectorAll('.chip[data-service], .chip[data-factor], .chip[data-age]').forEach(btn => {
     btn.addEventListener('click', () => {
-        const target = parseFloat(btn.dataset.service);
         const current = readConfig();
-        inputs.retireDate.value = toInputValue(dateAtService(current, target));
-        if (target > current.cap) inputs.cap.value = target;
+        let date;
+        if (btn.dataset.service !== undefined) {
+            const target = parseFloat(btn.dataset.service);
+            date = dateAtService(current, target);
+            if (target > current.cap) inputs.cap.value = target;
+        } else if (btn.dataset.factor !== undefined) {
+            date = dateAtFactor(current, parseFloat(btn.dataset.factor));
+        } else {
+            date = dateAtAge(current, parseFloat(btn.dataset.age));
+        }
+        inputs.retireDate.value = toInputValue(date);
         rebuild();
     });
 });
