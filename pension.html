@@ -669,8 +669,8 @@ footer.console-foot a:hover { text-shadow: 0 0 12px var(--plasma-cyan-dim); }
         </div>
         <div class="field">
             <label for="inBirthDate">Date of birth</label>
-            <input type="date" id="inBirthDate" value="1972-08-15">
-            <span class="hint">Day defaults to mid-August — set your exact date.</span>
+            <input type="date" id="inBirthDate" value="1972-08-08">
+            <span class="hint">Drives the age and factor milestones.</span>
         </div>
         <div class="field">
             <label for="inService">Service at anchor (years)</label>
@@ -823,7 +823,7 @@ const MS_YEAR = DAYS_YR * MS_DAY;
 
 const DEFAULTS = {
     anchorDate: '2026-01-01',
-    birthDate:  '1972-08-15',   // age 53 on the anchor date, August birthday
+    birthDate:  '1972-08-08',   // age 53 on the anchor date
     service:    24.3,
     best5:      140000,
     growth:     4,
@@ -832,7 +832,7 @@ const DEFAULTS = {
     retireDate: null            // derived: the 30-year service milestone
 };
 
-const STORE_KEY = 'cf-pension-console-v2';
+const STORE_KEY = 'cf-pension-console-v3';
 
 const el = id => document.getElementById(id);
 
