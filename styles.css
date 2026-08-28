@@ -1880,6 +1880,21 @@ body {
     color: var(--dim-star);
 }
 
+.footer-email {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--dim-star);
+    text-decoration: none;
+    display: block;
+    margin-top: 4px;
+    transition: color 0.3s ease;
+}
+
+.footer-email:hover {
+    color: var(--accent-cyan);
+}
+
 .footer-border {
     display: flex;
     gap: 10px;
