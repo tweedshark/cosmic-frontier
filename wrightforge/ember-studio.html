@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WrightForge Ember Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ground: #0f0d0e;
+    --bench: #171314;
+    --soot: #221c1d;
+    --rule: rgba(255, 228, 200, 0.10);
+    --steel: #aab0b8;
+    --steel-dim: #6f7279;
+    --text: #f3ece3;
+    --text-dim: #b9aea3;
+    --red: #8a2410;
+    --ember: #e8551a;
+    --amber: #ffa733;
+    --hot: #fff1d6;
+    --ash: #7c7573;
+    --display: "Big Shoulders Display", "Oswald", Impact, "Arial Narrow", sans-serif;
+    --body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+    --mono: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html { color-scheme: dark; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--text);
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
+
+  /* ---------- Hero ---------- */
+  .wf-hero {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    min-height: min(80vh, 820px);
+    display: flex;
+    flex-direction: column;
+    padding: 0 clamp(20px, 5vw, 64px);
+    background:
+      linear-gradient(180deg, #0b0a0b 0%, var(--ground) 45%, #150f0e 100%);
+    touch-action: pan-y;
+    cursor: default;
+  }
+  .wf-hero.is-stoke { cursor: crosshair; }
+  .hearth {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 62%;
+    z-index: 1;
+    pointer-events: none;
+    --breath: 1;
+    opacity: calc(var(--breath) * 0.95);
+    background:
+      radial-gradient(ellipse 62% 78% at 50% 104%, rgba(232, 85, 26, 0.30) 0%, rgba(138, 36, 16, 0.16) 38%, rgba(15, 13, 14, 0) 72%);
+    transition: opacity 0.25s linear;
+  }
+  #embers {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    display: block;
+  }
+  .wf-nav, .hero-body, .hero-foot { position: relative; z-index: 3; }
+
+  .wf-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-block: 22px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: 0.06em;
+  }
+  .mark svg { width: 22px; height: 22px; display: block; }
+  .wf-nav ul {
+    list-style: none;
+    margin: 0; padding: 0;
+    display: flex;
+    gap: 26px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--steel);
+  }
+  .wf-nav ul a { text-decoration: none; }
+  .wf-nav ul a:hover { color: var(--amber); }
+
+  .hero-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 22px;
+    padding-block: clamp(48px, 9vh, 96px) clamp(32px, 6vh, 64px);
+    max-width: 1180px;
+  }
+  .eyebrow {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--amber);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 28px; height: 1px;
+    background: var(--amber);
+  }
+  .wordmark {
+    margin: 0;
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: clamp(64px, 15.5vw, 204px);
+    line-height: 1;
+    letter-spacing: 0.005em;
+    white-space: nowrap;
+    color: var(--text);
+    text-shadow: 0 0 40px rgba(232, 85, 26, 0.12);
+    transition: text-shadow 0.35s ease, color 0.35s ease;
+  }
+  .wordmark.struck {
+    color: var(--hot);
+    text-shadow: 0 0 22px rgba(255, 241, 214, 0.55), 0 0 60px rgba(255, 167, 51, 0.45);
+    transition: none;
+  }
+  .wordmark.smoldering {
+    text-shadow: 0 0 6px rgba(138, 36, 16, 0.9), 0 0 28px rgba(232, 85, 26, 0.35), 0 0 80px rgba(232, 85, 26, 0.18);
+  }
+  .lede {
+    margin: 0;
+    max-width: 34em;
+    font-size: clamp(17px, 1.4vw, 20px);
+    line-height: 1.5;
+    color: var(--text-dim);
+    text-wrap: pretty;
+  }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 6px; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 22px;
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  }
+  .btn-hot {
+    color: #1a0d07;
+    background: linear-gradient(180deg, var(--amber) 0%, var(--ember) 100%);
+    box-shadow: 0 0 0 1px rgba(255, 167, 51, 0.3), 0 8px 30px rgba(232, 85, 26, 0.28);
+  }
+  .btn-hot:hover { transform: translateY(-1px); box-shadow: 0 0 0 1px rgba(255, 241, 214, 0.5), 0 10px 36px rgba(232, 85, 26, 0.42); }
+  .btn-ghost { color: var(--steel); border-color: rgba(170, 176, 184, 0.35); }
+  .btn-ghost:hover { border-color: var(--steel); color: var(--text); }
+
+  .hero-foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px 24px;
+    padding-block: 16px 20px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--steel-dim);
+  }
+  .hero-foot .readout { color: var(--steel); font-variant-numeric: tabular-nums; }
+
+  /* ---------- Bench ---------- */
+  .bench {
+    background: var(--bench);
+    border-top: 1px solid rgba(170, 176, 184, 0.18);
+    padding: 0 clamp(20px, 5vw, 64px);
+  }
+  .bench-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding-block: clamp(40px, 6vw, 72px) clamp(48px, 7vw, 88px);
+    display: grid;
+    gap: clamp(40px, 5vw, 64px);
+  }
+  .sec-head { display: grid; gap: 8px; max-width: 62ch; }
+  .sec-head h2 {
+    margin: 0;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(30px, 4vw, 44px);
+    line-height: 1;
+    letter-spacing: 0.01em;
+    text-wrap: balance;
+  }
+  .sec-head p { margin: 0; color: var(--text-dim); }
+  .kicker {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--amber);
+  }
+
+  .option-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px;
+    margin: 0; padding: 0;
+    list-style: none;
+  }
+  .opt {
+    appearance: none;
+    width: 100%;
+    text-align: left;
+    background: var(--soot);
+    border: 1px solid var(--rule);
+    color: var(--text);
+    padding: 14px 14px 12px;
+    cursor: pointer;
+    display: grid;
+    gap: 6px;
+    font: inherit;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .opt:hover { border-color: rgba(255, 167, 51, 0.45); }
+  .opt[aria-selected="true"] {
+    border-color: var(--ember);
+    background: #241816;
+    box-shadow: inset 0 0 0 1px rgba(232, 85, 26, 0.35), 0 0 28px rgba(232, 85, 26, 0.14);
+  }
+  .opt .opt-name {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: 0.03em;
+  }
+  .opt .opt-temp {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    color: var(--steel-dim);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .opt .opt-bar {
+    height: 3px;
+    margin-top: 4px;
+    background: linear-gradient(90deg, var(--red), var(--ember), var(--amber), var(--hot));
+    opacity: 0.35;
+  }
+  .opt[aria-selected="true"] .opt-bar { opacity: 1; }
+  .opt .opt-bar.ash { background: linear-gradient(90deg, var(--ember), var(--amber), var(--ash), #3a3436); }
+  .opt .opt-bar.spark { background: linear-gradient(90deg, var(--ember), var(--hot), var(--amber), var(--red)); }
+
+  .option-detail {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: 32px;
+    padding: 24px 0 0;
+    border-top: 1px solid var(--rule);
+  }
+  .option-detail h3 {
+    margin: 0 0 10px;
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 36px;
+    line-height: 1;
+    letter-spacing: 0.02em;
+  }
+  .option-detail h3 small {
+    display: block;
+    margin-top: 6px;
+    font-family: var(--mono);
+    font-weight: 400;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--amber);
+  }
+  .option-detail p { margin: 0; color: var(--text-dim); max-width: 58ch; }
+  .use-when h4 {
+    margin: 0 0 10px;
+    font-family: var(--mono);
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--steel);
+  }
+  .use-when ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; color: var(--text-dim); }
+  .use-when li { padding-left: 18px; position: relative; }
+  .use-when li::before {
+    content: "";
+    position: absolute; left: 0; top: 0.65em;
+    width: 8px; height: 2px;
+    background: var(--ember);
+  }
+
+  .tuning { display: grid; gap: 24px; }
+  .tune-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 18px 28px;
+  }
+  .tune { display: grid; gap: 8px; }
+  .tune label {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--steel);
+  }
+  .tune output { color: var(--amber); font-variant-numeric: tabular-nums; text-align: right; }
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 22px;
+    background: transparent;
+    margin: 0;
+    cursor: pointer;
+  }
+  input[type="range"]::-webkit-slider-runnable-track { height: 2px; background: rgba(170, 176, 184, 0.35); }
+  input[type="range"]::-moz-range-track { height: 2px; background: rgba(170, 176, 184, 0.35); }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px; height: 14px;
+    margin-top: -6px;
+    background: var(--amber);
+    border: 2px solid var(--bench);
+    box-shadow: 0 0 0 1px var(--amber);
+    border-radius: 50%;
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 10px; height: 10px;
+    background: var(--amber);
+    border: 2px solid var(--bench);
+    box-shadow: 0 0 0 1px var(--amber);
+    border-radius: 50%;
+  }
+  .heat-scale { display: grid; gap: 8px; }
+  .heat-bar {
+    height: 10px;
+    background: linear-gradient(90deg, #5a1206 0%, #b2280c 22%, #e8551a 48%, #ffa733 74%, #fff1d6 100%);
+    position: relative;
+  }
+  .heat-bar i {
+    position: absolute; top: -3px; bottom: -3px; width: 1px;
+    background: var(--bench);
+    opacity: 0.8;
+  }
+  .heat-ticks {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--steel-dim);
+    font-variant-numeric: tabular-nums;
+  }
+  .heat-ticks span b { color: var(--steel); font-weight: 500; display: block; }
+  .tune-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+  .btn-reset {
+    appearance: none;
+    background: transparent;
+    border: 1px solid rgba(170, 176, 184, 0.35);
+    color: var(--steel);
+    padding: 9px 16px;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .btn-reset:hover { border-color: var(--steel); color: var(--text); }
+  .tune-actions .note { font-family: var(--mono); font-size: 12px; color: var(--steel-dim); }
+
+  .notes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 28px;
+    padding-top: 28px;
+    border-top: 1px solid var(--rule);
+  }
+  .notes h4 {
+    margin: 0 0 8px;
+    font-family: var(--mono);
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--steel);
+  }
+  .notes p { margin: 0; color: var(--text-dim); font-size: 15px; }
+  .notes code { font-family: var(--mono); font-size: 13px; color: var(--amber); }
+
+  @media (max-width: 720px) {
+    .wf-nav ul { display: none; }
+    .option-detail { grid-template-columns: 1fr; gap: 22px; }
+    .heat-ticks span:nth-child(even) { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hearth, .wordmark, .btn { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="wf-hero" id="hero">
+  <div class="hearth" id="hearth" aria-hidden="true"></div>
+  <canvas id="embers" aria-hidden="true"></canvas>
+
+  <nav class="wf-nav" aria-label="Primary">
+    <a class="mark" href="#hero" aria-label="WrightForge home">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M3 7h13l3-2v7l-3-2H8v9H4v-9H3z" fill="#ffa733"/>
+        <path d="M2 21h20" stroke="#aab0b8" stroke-width="2"/>
+      </svg>
+      WRIGHTFORGE
+    </a>
+    <ul>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#approach">Approach</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="hero-body">
+    <p class="eyebrow">Software &amp; AI, built by hand in Canada</p>
+    <h1 class="wordmark" id="wordmark">WRIGHTFORGE</h1>
+    <p class="lede">
+      We take the rough stock of an idea and work it into software that holds an edge —
+      strategy, the build, and the AI that runs inside it.
+    </p>
+    <div class="cta-row">
+      <a class="btn btn-hot" href="#contact">Start a build</a>
+      <a class="btn btn-ghost" href="#work">See the work</a>
+    </div>
+  </div>
+
+  <div class="hero-foot">
+    <span class="readout" id="readout">HEARTH · CHERRY RED · 805 °C · 0 EMBERS</span>
+    <span id="hint">Scroll to compare six ember treatments</span>
+  </div>
+</header>
+
+<main class="bench">
+  <div class="bench-inner">
+    <section class="options" aria-labelledby="options-title">
+      <div class="sec-head" style="margin-bottom: 24px;">
+        <span class="kicker">Ember treatments</span>
+        <h2 id="options-title">Six ways to light the hero</h2>
+        <p>Pick one and the hero above switches live. Each is a separate particle behaviour on the same canvas — not a colour swap — so they read differently from across the room. The colours follow the real forge heat scale below.</p>
+      </div>
+      <div class="option-list" role="tablist" aria-label="Ember treatment" id="optionList"></div>
+      <div class="option-detail" id="optionDetail" role="tabpanel"></div>
+    </section>
+
+    <section class="tuning" aria-labelledby="tuning-title">
+      <div class="sec-head">
+        <span class="kicker">Tuning</span>
+        <h2 id="tuning-title">Work the fire</h2>
+        <p>These apply to whichever treatment is selected. Heat is mapped to the temperatures a smith reads by eye.</p>
+      </div>
+      <div class="tune-grid">
+        <div class="tune">
+          <label for="tune-density">Density <output id="out-density">1.0×</output></label>
+          <input type="range" id="tune-density" min="0.25" max="2" step="0.05" value="1">
+        </div>
+        <div class="tune">
+          <label for="tune-heat">Heat <output id="out-heat">Cherry red · 805 °C</output></label>
+          <input type="range" id="tune-heat" min="0" max="1" step="0.01" value="0.34">
+        </div>
+        <div class="tune">
+          <label for="tune-draft">Draft <output id="out-draft">Still air</output></label>
+          <input type="range" id="tune-draft" min="-1" max="1" step="0.05" value="0">
+        </div>
+        <div class="tune">
+          <label for="tune-grain">Grain <output id="out-grain">Medium</output></label>
+          <input type="range" id="tune-grain" min="0.5" max="2" step="0.05" value="1">
+        </div>
+      </div>
+      <div class="heat-scale" aria-label="Forge heat colour scale">
+        <div class="heat-bar" aria-hidden="true"><i style="left:22%"></i><i style="left:48%"></i><i style="left:74%"></i></div>
+        <div class="heat-ticks">
+          <span><b>Faint red</b>550 °C</span>
+          <span><b>Dull red</b>700 °C</span>
+          <span><b>Cherry</b>800 °C</span>
+          <span><b>Orange</b>900 °C</span>
+          <span><b>Yellow</b>1050 °C</span>
+          <span><b>White</b>1300 °C</span>
+        </div>
+      </div>
+      <div class="tune-actions">
+        <button class="btn-reset" id="reset" type="button">Reset to defaults</button>
+        <span class="note">The selected treatment is kept in the page address, so a link to this page opens on it.</span>
+      </div>
+    </section>
+
+    <section class="notes" aria-label="Build notes">
+      <div>
+        <h4>How it's built</h4>
+        <p>One <code>&lt;canvas&gt;</code> behind the copy, additive blending for anything hot, normal blending for ash. Every particle carries a heat value that picks its colour from a blackbody-style ramp, so cooling embers turn from white through amber to dull red before they die.</p>
+      </div>
+      <div>
+        <h4>Performance</h4>
+        <p>Between 150 and 500 particles at default density; the loop pauses when the hero scrolls out of view or the tab is hidden. With reduced-motion enabled, the fire renders once as a still frame.</p>
+      </div>
+      <div>
+        <h4>Placeholder copy</h4>
+        <p>The headline, lede and navigation are stand-ins written to the brand — they are not pulled from the live site. Swap in the real copy and the wordmark treatments still apply.</p>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  var hero = document.getElementById('hero');
+  var canvas = document.getElementById('embers');
+  var ctx = canvas.getContext('2d');
+  var wordmark = document.getElementById('wordmark');
+  var hearth = document.getElementById('hearth');
+  var readoutEl = document.getElementById('readout');
+  var hintEl = document.getElementById('hint');
+  var TAU = Math.PI * 2;
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function rand(a, b) { return a + Math.random() * (b - a); }
+  function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+
+  /* ---- heat ramp (dull red -> white heat) ---- */
+  var STOPS = [[0, [96, 18, 6]], [0.22, [178, 40, 12]], [0.48, [232, 85, 26]], [0.74, [255, 167, 51]], [1, [255, 241, 214]]];
+  var HEAT = [];
+  for (var i = 0; i < 64; i++) {
+    var t = i / 63, j = 0;
+    while (j < STOPS.length - 2 && t > STOPS[j + 1][0]) j++;
+    var t0 = STOPS[j][0], c0 = STOPS[j][1], t1 = STOPS[j + 1][0], c1 = STOPS[j + 1][1];
+    var u = (t - t0) / (t1 - t0);
+    HEAT.push([Math.round(c0[0] + (c1[0] - c0[0]) * u), Math.round(c0[1] + (c1[1] - c0[1]) * u), Math.round(c0[2] + (c1[2] - c0[2]) * u)]);
+  }
+  function heatRGB(t) { var k = (clamp01(t) * 63) | 0; return HEAT[k]; }
+  function tempC(t) { return 550 + clamp01(t) * 750; }
+  function heatName(t) {
+    var c = tempC(t);
+    return c < 650 ? 'Faint red' : c < 760 ? 'Dull red' : c < 850 ? 'Cherry red' : c < 960 ? 'Orange' : c < 1120 ? 'Yellow' : 'White heat';
+  }
+
+  /* ---- state ---- */
+  var tune = { density: 1, heat: 0.34, draft: 0, grain: 1 };
+  var W = 0, H = 0, DPR = 1, time = 0, last = 0, running = false, raf = 0;
+  var particles = [], flashes = [], acc = {};
+  var glyphPts = null, quenchLine = 0, anvilFloor = 0;
+  var pointer = { x: -9999, y: -9999, vx: 0, vy: 0, energy: 0, over: false, t: 0 };
+  var mode = null;
+
+  function spawn(o) {
+    var p = {
+      x: 0, y: 0, vx: 0, vy: 0, age: 0, life: 2, size: 2, heat: 0.5,
+      phase: Math.random() * TAU, flk: rand(5, 11), kind: 'ember', state: 'rise',
+      turb: 1, buoy: 0, grav: 0, drag: 0, cool: 0, px: 0, py: 0
+    };
+    for (var k in o) p[k] = o[k];
+    p.px = p.x; p.py = p.y;
+    particles.push(p);
+    return p;
+  }
+  function emit(key, n, fn) {
+    acc[key] = (acc[key] || 0) + n;
+    while (acc[key] >= 1) { acc[key] -= 1; fn(); }
+  }
+  function hearthEmber(o) {
+    var p = {
+      x: rand(-10, W + 10), y: H + rand(0, 16),
+      vx: rand(-12, 12), vy: -rand(18, 58),
+      life: rand(3, 7), size: rand(0.8, 2.6) * tune.grain,
+      heat: clamp01(tune.heat + rand(-0.2, 0.2)), turb: 1, buoy: 6, cool: 0.05
+    };
+    if (o) for (var k in o) p[k] = o[k];
+    return spawn(p);
+  }
+  function burst(ox, oy, n, opts) {
+    for (var i = 0; i < n; i++) {
+      var ang = -Math.PI / 2 + rand(-(opts.spread || 1.25), opts.spread || 1.25);
+      var sp = rand(opts.minSpeed || 120, opts.maxSpeed || 560);
+      spawn({
+        kind: 'spark', x: ox, y: oy,
+        vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp,
+        life: rand(0.45, 1.3), size: rand(0.8, 1.8) * tune.grain,
+        heat: clamp01(tune.heat + rand(0.25, 0.5)),
+        turb: 0, grav: opts.grav || 420, drag: 0.9, cool: rand(0.45, 0.85)
+      });
+    }
+  }
+
+  /* ---- the six treatments ---- */
+  var MODES = [
+    {
+      id: 'hearth', name: 'Hearth', temp: 'Cherry red · 800 °C', bar: '',
+      blurb: 'A steady bed of coals under the fold. Embers lift off the bottom edge, wander in the draft, and burn out before they reach the copy. This is the quiet default — it reads as warmth rather than spectacle, and the eye stops tracking it after a few seconds, which is what you want behind a headline.',
+      use: ['The hero has to carry real copy and a call to action', 'You want ambience, not a show', 'Lowest cost on older laptops and phones'],
+      hint: 'Scroll to compare six ember treatments',
+      tick: function (dt) { emit('hearth', 72 * tune.density * dt, function () { hearthEmber(); }); }
+    },
+    {
+      id: 'anvil', name: 'Anvil', temp: 'White heat · 1250 °C', bar: 'spark',
+      blurb: 'Nothing, then a hammer strike. Every couple of seconds a burst of white-hot sparks fires up from below the wordmark, arcs under gravity, skips off the anvil and cools to red as it falls. The wordmark flashes on the hit. Between strikes the hero is nearly still, so the strike lands.',
+      use: ['The brand is about making, not ambience', 'You want a moment people remember and mention', 'A page that sells build work, not a long read'],
+      hint: 'Wait for the strike',
+      next: 0.9,
+      tick: function (dt) {
+        emit('anvilbase', 10 * tune.density * dt, function () { hearthEmber({ size: rand(0.6, 1.6) * tune.grain, vy: -rand(10, 30) }); });
+        this.next -= dt;
+        if (this.next <= 0) { this.strike(); this.next = rand(1.6, 2.9); }
+      },
+      strike: function () {
+        var ox = W * 0.5 + rand(-W * 0.06, W * 0.06), oy = anvilFloor;
+        burst(ox, oy, Math.round(rand(55, 115) * Math.sqrt(tune.density)), { grav: 440 });
+        flashes.push({ x: ox, y: oy, r: Math.max(180, W * 0.24), age: 0, life: 0.38 });
+        wordmark.classList.add('struck');
+        setTimeout(function () { wordmark.classList.remove('struck'); }, 140);
+      },
+      update: function (p) {
+        if (p.kind === 'spark' && p.y > anvilFloor && p.vy > 0) {
+          p.y = anvilFloor; p.vy *= -0.32; p.vx *= 0.7; p.life *= 0.8;
+        }
+      }
+    },
+    {
+      id: 'bellows', name: 'Bellows', temp: 'Breathing · 700–1000 °C', bar: '',
+      blurb: 'The hearth, but breathing. On a slow five-second cycle the fire draws in and flares: embers come in waves, brighten from dull red toward yellow at the top of each breath, and the glow at the base of the hero swells with them. It is the same coals as Hearth with a pulse — the difference is felt more than seen.',
+      use: ['You want life in the hero without anything sudden', 'Pairs with a slow page-load reveal', 'Longer, calmer pages — an about page, a manifesto'],
+      hint: 'Watch the base of the fire breathe',
+      tick: function (dt) {
+        var breath = 0.5 + 0.5 * Math.sin(time * TAU / 5.2);
+        var b2 = breath * breath;
+        hearth.style.setProperty('--breath', (0.45 + 0.8 * b2).toFixed(3));
+        emit('bellows', (26 + 120 * b2) * tune.density * dt, function () {
+          hearthEmber({
+            heat: clamp01(tune.heat - 0.15 + 0.45 * breath + rand(-0.12, 0.12)),
+            vy: -rand(14, 40) * (0.6 + 1.1 * breath),
+            buoy: 3 + 22 * b2
+          });
+        });
+        this.breath = breath;
+      },
+      update: function (p, dt) { p.vy -= (this.breath - 0.5) * 34 * dt; }
+    },
+    {
+      id: 'quench', name: 'Quench', temp: 'Orange to ash · 900 → 20 °C', bar: 'ash',
+      blurb: 'Hot embers rise fast from the base and hit an invisible line just under the wordmark — the quench. There they stall, cool through red to grey in half a second, and drift back down as ash. Two layers moving in opposite directions: orange going up, grey falling through it. Quiet, and a little melancholy.',
+      use: ['You want texture across the whole hero, not just the bottom', 'The story is craft and patience rather than heat', 'Works well behind lighter, more editorial copy'],
+      hint: 'Embers rise, cool at the line, fall as ash',
+      tick: function (dt) {
+        emit('quench', 78 * tune.density * dt, function () {
+          hearthEmber({ vy: -rand(42, 96), heat: clamp01(tune.heat + 0.1 + rand(-0.15, 0.15)), cool: 0.02, life: rand(5, 9) });
+        });
+      },
+      update: function (p, dt) {
+        if (p.state === 'rise' && p.y < quenchLine + rand(-30, 30)) {
+          p.state = 'cool'; p.cool = 1.7; p.vy *= 0.25; p.buoy = 0;
+        } else if (p.state === 'cool' && p.heat <= 0.02) {
+          p.state = 'ash'; p.kind = 'ash'; p.heat = 0; p.cool = 0;
+          p.vy = rand(9, 26); p.vx *= 0.3; p.turb = 0.7; p.size *= 1.5;
+          p.life = p.age + rand(5, 10);
+        }
+        if (p.kind === 'ash') p.vy += (rand(9, 26) - p.vy) * 0.5 * dt;
+      }
+    },
+    {
+      id: 'stoke', name: 'Stoke', temp: 'Stirred · 950 °C', bar: '',
+      blurb: 'A low hearth that answers the visitor. The cursor is a poker: pass it through the fire and embers scatter away from it and flare brighter as they go; move quickly and you kick up a trail of new ones. A click or tap strikes a burst of sparks where you are. Left alone, it settles back to coals.',
+      use: ['Desktop-heavy audience who will play with it', 'You want the hero to demonstrate responsiveness, not just say it', 'Landing pages where time-on-page matters'],
+      hint: 'Move your cursor through the fire · click to strike',
+      tick: function (dt) {
+        emit('stokebase', 42 * tune.density * dt, function () { hearthEmber(); });
+        if (pointer.over && pointer.energy > 0) {
+          var n = Math.min(40, pointer.energy * 0.11 * tune.density);
+          pointer.energy = 0;
+          emit('stoketrail', n, function () {
+            spawn({
+              x: pointer.x + rand(-14, 14), y: pointer.y + rand(-14, 14),
+              vx: pointer.vx * 0.25 + rand(-40, 40), vy: pointer.vy * 0.25 - rand(30, 100),
+              life: rand(0.9, 2.4), size: rand(0.7, 2) * tune.grain,
+              heat: clamp01(tune.heat + 0.3 + rand(-0.1, 0.15)), turb: 1, buoy: 10, cool: 0.25
+            });
+          });
+        }
+      },
+      update: function (p, dt) {
+        if (!pointer.over) return;
+        var dx = p.x - pointer.x, dy = p.y - pointer.y, R = 140;
+        var d2 = dx * dx + dy * dy;
+        if (d2 < R * R && d2 > 0.01) {
+          var d = Math.sqrt(d2), f = 1 - d / R;
+          p.vx += dx / d * f * 300 * dt;
+          p.vy += dy / d * f * 300 * dt;
+          p.heat = Math.min(1, p.heat + f * 1.4 * dt);
+        }
+      },
+      down: function (x, y) {
+        burst(x, y, Math.round(34 * Math.sqrt(tune.density)), { grav: 320, spread: Math.PI, minSpeed: 80, maxSpeed: 380 });
+        flashes.push({ x: x, y: y, r: 120, age: 0, life: 0.3 });
+      }
+    },
+    {
+      id: 'smolder', name: 'Smolder', temp: 'Dull red · 650 °C', bar: '',
+      blurb: 'The wordmark is the thing that is hot. Tiny embers are born on the edges of the letters themselves and lift a short way before they die, so WRIGHTFORGE reads as iron just pulled from the fire, with a dull red glow bleeding off the glyphs. Only a thin haze of coals below for depth. The most on-brand of the six and the most restrained.',
+      use: ['The name is the message', 'You want the effect tied to the type, so it survives any layout', 'Pairs with a hot-metal gradient on the wordmark if you want to push it'],
+      hint: 'The letters are the fire',
+      init: function () { wordmark.classList.add('smoldering'); sampleGlyphs(); },
+      exit: function () { wordmark.classList.remove('smoldering'); },
+      resize: function () { sampleGlyphs(); },
+      tick: function (dt) {
+        emit('smolderbase', 14 * tune.density * dt, function () { hearthEmber({ size: rand(0.6, 1.8) * tune.grain, heat: clamp01(tune.heat - 0.15) }); });
+        if (!glyphPts || glyphPts.length < 2) return;
+        emit('smolder', 190 * tune.density * dt, function () {
+          var i = ((Math.random() * glyphPts.length / 2) | 0) * 2;
+          spawn({
+            x: glyphPts[i] + rand(-1, 1), y: glyphPts[i + 1] + rand(-1, 1),
+            vx: rand(-7, 7), vy: -rand(6, 28),
+            life: rand(1.2, 3.4), size: rand(0.7, 1.9) * tune.grain,
+            heat: clamp01(tune.heat - 0.12 + rand(-0.15, 0.15)), turb: 0.5, buoy: 5, cool: 0.14
+          });
+        });
+      }
+    }
+  ];
+
+  /* ---- glyph sampling for Smolder ---- */
+  function sampleGlyphs() {
+    if (!W || !H) return;
+    var r = wordmark.getBoundingClientRect(), hr = hero.getBoundingClientRect();
+    var left = r.left - hr.left, top = r.top - hr.top;
+    var s = 0.5;
+    var off = document.createElement('canvas');
+    off.width = Math.max(1, Math.ceil(W * s)); off.height = Math.max(1, Math.ceil(H * s));
+    var oc = off.getContext('2d');
+    oc.scale(s, s);
+    var cs = getComputedStyle(wordmark);
+    oc.font = cs.fontStyle + ' ' + cs.fontWeight + ' ' + cs.fontSize + ' ' + cs.fontFamily;
+    if ('letterSpacing' in oc) oc.letterSpacing = cs.letterSpacing;
+    oc.textAlign = 'left';
+    oc.textBaseline = 'alphabetic';
+    var text = wordmark.textContent;
+    var m = oc.measureText(text);
+    var baseline;
+    if (m.fontBoundingBoxAscent != null && m.fontBoundingBoxDescent != null) {
+      baseline = top + (r.height - (m.fontBoundingBoxAscent + m.fontBoundingBoxDescent)) / 2 + m.fontBoundingBoxAscent;
+    } else {
+      oc.textBaseline = 'middle';
+      baseline = top + r.height / 2;
+    }
+    oc.fillStyle = '#fff';
+    oc.fillText(text, left, baseline);
+    var w = off.width, h = off.height;
+    var img = oc.getImageData(0, 0, w, h).data;
+    var pts = [], step = 2;
+    for (var y = step; y < h - step; y += step) {
+      for (var x = step; x < w - step; x += step) {
+        var a = img[(y * w + x) * 4 + 3];
+        if (a < 128) continue;
+        if (img[(y * w + x - step) * 4 + 3] < 128 || img[(y * w + x + step) * 4 + 3] < 128 ||
+            img[((y - step) * w + x) * 4 + 3] < 128 || img[((y + step) * w + x) * 4 + 3] < 128) {
+          pts.push(x / s, y / s);
+        }
+      }
+    }
+    glyphPts = pts;
+  }
+
+  /* ---- layout ---- */
+  function fitWordmark() {
+    wordmark.style.fontSize = '';
+    var avail = wordmark.parentElement.clientWidth, w = wordmark.scrollWidth;
+    if (w > avail && avail > 0) {
+      var fs = parseFloat(getComputedStyle(wordmark).fontSize);
+      wordmark.style.fontSize = Math.floor(fs * avail / w * 0.99) + 'px';
+    }
+  }
+  function resize() {
+    fitWordmark();
+    var r = hero.getBoundingClientRect();
+    W = r.width; H = r.height;
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.round(W * DPR); canvas.height = Math.round(H * DPR);
+    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    var wr = wordmark.getBoundingClientRect();
+    quenchLine = wr.bottom - r.top + 24;
+    anvilFloor = H * 0.87;
+    if (mode && mode.resize) mode.resize();
+    if (reduceMotion) renderStill();
+  }
+
+  /* ---- simulation ---- */
+  function step(dt) {
+    time += dt;
+    if (mode.tick) mode.tick(dt);
+    var draft = tune.draft * 46;
+    for (var i = particles.length - 1; i >= 0; i--) {
+      var p = particles[i];
+      p.px = p.x; p.py = p.y;
+      p.age += dt;
+      if (p.turb) {
+        p.vx += Math.sin(p.y * 0.015 + time * 1.7 + p.phase) * 20 * p.turb * dt;
+        p.vx += Math.cos(p.x * 0.012 + time * 1.1 + p.phase) * 9 * p.turb * dt;
+        p.vx += draft * 1.3 * dt;
+        p.vx *= 1 - 0.45 * dt;
+      }
+      if (p.grav) { p.vy += p.grav * dt; p.vx += draft * 0.4 * dt; }
+      if (p.drag) { var k = 1 - p.drag * dt; p.vx *= k; p.vy *= k; }
+      p.vy -= p.buoy * dt;
+      if (p.cool) p.heat -= p.cool * dt;
+      if (mode.update) mode.update(p, dt);
+      p.x += p.vx * dt; p.y += p.vy * dt;
+      if (p.age >= p.life || p.y < -40 || p.y > H + 60 || p.x < -80 || p.x > W + 80) {
+        particles[i] = particles[particles.length - 1];
+        particles.pop();
+      }
+    }
+    for (var f = flashes.length - 1; f >= 0; f--) {
+      flashes[f].age += dt;
+      if (flashes[f].age >= flashes[f].life) flashes.splice(f, 1);
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    var i, p, u, env, c, a;
+
+    ctx.globalCompositeOperation = 'source-over';
+    for (i = 0; i < particles.length; i++) {
+      p = particles[i];
+      if (p.kind !== 'ash') continue;
+      u = p.age / p.life;
+      env = u < 0.12 ? u / 0.12 : Math.pow(1 - (u - 0.12) / 0.88, 1.4);
+      ctx.fillStyle = 'rgba(124,117,115,' + (env * 0.75).toFixed(3) + ')';
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, TAU); ctx.fill();
+    }
+
+    ctx.globalCompositeOperation = 'lighter';
+    for (i = 0; i < flashes.length; i++) {
+      var fl = flashes[i], fa = 1 - fl.age / fl.life;
+      var g = ctx.createRadialGradient(fl.x, fl.y, 0, fl.x, fl.y, fl.r);
+      g.addColorStop(0, 'rgba(255,241,214,' + (0.55 * fa).toFixed(3) + ')');
+      g.addColorStop(0.35, 'rgba(255,167,51,' + (0.22 * fa).toFixed(3) + ')');
+      g.addColorStop(1, 'rgba(232,85,26,0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(fl.x - fl.r, fl.y - fl.r, fl.r * 2, fl.r * 2);
+    }
+    ctx.lineCap = 'round';
+    for (i = 0; i < particles.length; i++) {
+      p = particles[i];
+      if (p.kind === 'ash') continue;
+      u = p.age / p.life;
+      env = u < 0.12 ? u / 0.12 : Math.pow(1 - (u - 0.12) / 0.88, 1.6);
+      a = env * (0.72 + 0.28 * Math.sin(time * p.flk + p.phase));
+      if (a <= 0.01) continue;
+      c = heatRGB(p.heat);
+      var rgb = c[0] + ',' + c[1] + ',' + c[2];
+      if (p.kind === 'spark') {
+        ctx.strokeStyle = 'rgba(' + rgb + ',' + a.toFixed(3) + ')';
+        ctx.lineWidth = p.size;
+        ctx.beginPath(); ctx.moveTo(p.px, p.py); ctx.lineTo(p.x, p.y); ctx.stroke();
+        ctx.fillStyle = 'rgba(' + rgb + ',' + (a * 0.22).toFixed(3) + ')';
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.size * 2.6, 0, TAU); ctx.fill();
+      } else {
+        ctx.fillStyle = 'rgba(' + rgb + ',' + a.toFixed(3) + ')';
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, TAU); ctx.fill();
+        ctx.fillStyle = 'rgba(' + rgb + ',' + (a * 0.16).toFixed(3) + ')';
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.size * 3.4, 0, TAU); ctx.fill();
+      }
+    }
+    ctx.globalCompositeOperation = 'source-over';
+  }
+
+  function frame(now) {
+    if (!running) return;
+    var dt = Math.min(0.05, (now - last) / 1000) || 0.016;
+    last = now;
+    step(dt); draw();
+    raf = requestAnimationFrame(frame);
+  }
+  function start() {
+    if (running || reduceMotion) return;
+    running = true; last = performance.now();
+    raf = requestAnimationFrame(frame);
+  }
+  function stop() { running = false; cancelAnimationFrame(raf); }
+
+  function renderStill() {
+    particles = []; flashes = []; acc = {};
+    if (mode && mode.id === 'anvil') mode.next = 0.6;
+    for (var i = 0; i < 260; i++) step(1 / 30);
+    draw();
+  }
+
+  /* ---- mode switching ---- */
+  function setMode(id, fromHash) {
+    var next = null;
+    for (var i = 0; i < MODES.length; i++) if (MODES[i].id === id) next = MODES[i];
+    if (!next) next = MODES[0];
+    if (mode && mode.exit) mode.exit();
+    mode = next;
+    particles = []; flashes = []; acc = {};
+    hearth.style.setProperty('--breath', '1');
+    wordmark.classList.remove('struck');
+    hero.classList.toggle('is-stoke', mode.id === 'stoke');
+    if (mode.id === 'anvil') mode.next = 0.9;
+    if (mode.init) mode.init();
+    hintEl.textContent = mode.hint;
+    renderOptions();
+    if (!fromHash) {
+      try { history.replaceState(null, '', '#' + mode.id); } catch (e) {}
+    }
+    if (reduceMotion) renderStill();
+    updateReadout();
+  }
+
+  var listEl = document.getElementById('optionList');
+  var detailEl = document.getElementById('optionDetail');
+  function renderOptions() {
+    if (!listEl.childNodes.length) {
+      MODES.forEach(function (m) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'opt'; b.id = 'opt-' + m.id;
+        b.setAttribute('role', 'tab');
+        b.innerHTML = '<span class="opt-name"></span><span class="opt-temp"></span><span class="opt-bar ' + m.bar + '"></span>';
+        b.querySelector('.opt-name').textContent = m.name;
+        b.querySelector('.opt-temp').textContent = m.temp;
+        b.addEventListener('click', function () { setMode(m.id); });
+        listEl.appendChild(b);
+      });
+    }
+    MODES.forEach(function (m) {
+      var b = document.getElementById('opt-' + m.id);
+      var on = m.id === mode.id;
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+      b.tabIndex = on ? 0 : -1;
+    });
+    detailEl.innerHTML = '';
+    var left = document.createElement('div');
+    var h3 = document.createElement('h3');
+    h3.textContent = mode.name;
+    var small = document.createElement('small'); small.textContent = mode.temp; h3.appendChild(small);
+    var para = document.createElement('p'); para.textContent = mode.blurb;
+    left.appendChild(h3); left.appendChild(para);
+    var right = document.createElement('div'); right.className = 'use-when';
+    var h4 = document.createElement('h4'); h4.textContent = 'Reach for it when';
+    var ul = document.createElement('ul');
+    mode.use.forEach(function (s) { var li = document.createElement('li'); li.textContent = s; ul.appendChild(li); });
+    right.appendChild(h4); right.appendChild(ul);
+    detailEl.appendChild(left); detailEl.appendChild(right);
+    detailEl.setAttribute('aria-labelledby', 'opt-' + mode.id);
+  }
+  listEl.addEventListener('keydown', function (e) {
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    var idx = MODES.findIndex(function (m) { return m.id === mode.id; });
+    idx = (idx + (e.key === 'ArrowRight' ? 1 : -1) + MODES.length) % MODES.length;
+    setMode(MODES[idx].id);
+    document.getElementById('opt-' + MODES[idx].id).focus();
+    e.preventDefault();
+  });
+
+  /* ---- tuning controls ---- */
+  var inputs = {
+    density: document.getElementById('tune-density'),
+    heat: document.getElementById('tune-heat'),
+    draft: document.getElementById('tune-draft'),
+    grain: document.getElementById('tune-grain')
+  };
+  var outs = {
+    density: document.getElementById('out-density'),
+    heat: document.getElementById('out-heat'),
+    draft: document.getElementById('out-draft'),
+    grain: document.getElementById('out-grain')
+  };
+  function describeTune() {
+    outs.density.textContent = tune.density.toFixed(2).replace(/0$/, '') + '×';
+    outs.heat.textContent = heatName(tune.heat) + ' · ' + Math.round(tempC(tune.heat)) + ' °C';
+    var d = tune.draft;
+    outs.draft.textContent = Math.abs(d) < 0.08 ? 'Still air' : (d < 0 ? 'Draft from right' : 'Draft from left') + ' · ' + Math.round(Math.abs(d) * 100) + '%';
+    var g = tune.grain;
+    outs.grain.textContent = g < 0.8 ? 'Fine' : g < 1.25 ? 'Medium' : g < 1.7 ? 'Coarse' : 'Cinders';
+  }
+  Object.keys(inputs).forEach(function (k) {
+    inputs[k].addEventListener('input', function () {
+      tune[k] = parseFloat(inputs[k].value);
+      describeTune();
+      if (reduceMotion) renderStill();
+    });
+  });
+  document.getElementById('reset').addEventListener('click', function () {
+    tune = { density: 1, heat: 0.34, draft: 0, grain: 1 };
+    Object.keys(inputs).forEach(function (k) { inputs[k].value = tune[k]; });
+    describeTune();
+    if (reduceMotion) renderStill();
+  });
+
+  function updateReadout() {
+    readoutEl.textContent = mode.name.toUpperCase() + ' · ' + heatName(tune.heat).toUpperCase() + ' · ' +
+      Math.round(tempC(tune.heat)) + ' °C · ' + particles.length + ' EMBERS';
+  }
+  setInterval(updateReadout, 320);
+
+  /* ---- pointer (Stoke) ---- */
+  function localPoint(e) {
+    var r = hero.getBoundingClientRect();
+    return { x: e.clientX - r.left, y: e.clientY - r.top };
+  }
+  hero.addEventListener('pointermove', function (e) {
+    var q = localPoint(e), now = performance.now();
+    var dt = Math.max(0.008, (now - pointer.t) / 1000);
+    if (pointer.over) {
+      var dx = q.x - pointer.x, dy = q.y - pointer.y;
+      pointer.vx = dx / dt; pointer.vy = dy / dt;
+      pointer.energy += Math.sqrt(dx * dx + dy * dy);
+    }
+    pointer.x = q.x; pointer.y = q.y; pointer.t = now; pointer.over = true;
+  });
+  hero.addEventListener('pointerleave', function () { pointer.over = false; pointer.energy = 0; });
+  hero.addEventListener('pointerdown', function (e) {
+    if (e.target.closest('a, button')) return;
+    if (mode.down && !reduceMotion) { var q = localPoint(e); mode.down(q.x, q.y); }
+  });
+
+  /* ---- lifecycle ---- */
+  var visible = true;
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      visible = entries[0].isIntersecting;
+      if (visible && !document.hidden) start(); else stop();
+    }, { threshold: 0.02 }).observe(hero);
+  }
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) stop(); else if (visible) start();
+  });
+  var resizeTimer = 0;
+  if ('ResizeObserver' in window) {
+    new ResizeObserver(function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(resize, 60);
+    }).observe(hero);
+  } else {
+    window.addEventListener('resize', function () { clearTimeout(resizeTimer); resizeTimer = setTimeout(resize, 60); });
+  }
+  window.addEventListener('hashchange', function () { setMode(location.hash.slice(1), true); });
+
+  resize();
+  describeTune();
+  setMode(location.hash.slice(1) || 'hearth', true);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () { resize(); });
+  }
+  start();
+})();
+</script>
+</body>
+</html>
